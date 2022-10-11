@@ -1,0 +1,4 @@
+repository "DemoProject@gxpyzgl@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
