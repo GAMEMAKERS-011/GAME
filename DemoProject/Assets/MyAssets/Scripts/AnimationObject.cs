@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DynamicInteractiveObject : MonoBehaviour
+public class AnimationObject : MonoBehaviour
 {
-    //public string infoMsg = ""; // the variable that holds the object information to display in the pop-up window
     public GameObject character;    // link an instance of the character to calculate the distance
-    //public GameObject infoWindow;   // link the pop-up window
     public GameObject animi;
     bool hasPlayed = false;
-    //bool hasShownWindow = false;    // press x key again to disable the pop-up window
 
     void Start()
     {
