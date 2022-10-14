@@ -15,7 +15,7 @@ public class ToObjectBucket : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 5)
+        if (Vector3.Distance(character.transform.position, transform.position) < 1)
         {
             if(Input.GetButtonDown("InteractButton"))
             {
