@@ -23,14 +23,14 @@ public class itemChoser : MonoBehaviour
         touched = false;
         mySprite = Resources.Load("Selected", typeof(Sprite)) as Sprite;
         notSelect = Resources.Load("block", typeof(Sprite)) as Sprite;
-        blank= Resources.Load("blank", typeof(Sprite)) as Sprite;
+        blank = Resources.Load("blank", typeof(Sprite)) as Sprite;
         capacity = 0;
         tags = new string[6];
-        for(int i=0;i<6;i++)
+        for (int i = 0; i < 6; i++)
         {
             tags[i] = "";
         }
-       
+
     }
 
     // Update is called once per frame
@@ -103,23 +103,23 @@ public class itemChoser : MonoBehaviour
     }
     void switchSelected()
     {
-        if (touched&&(selected>0))
-        {   
-           
+        if (touched && (selected > 0))
+        {
+
             Debug.Log("update Selected");
             Debug.Log(selected);
             Debug.Log("number of updated above---------");
-            picFrame[selected-1].sprite =mySprite;
-            if(lastSelected!=0)
+            picFrame[selected - 1].sprite = mySprite;
+            if (lastSelected != 0)
             {
-                picFrame[lastSelected-1].sprite = notSelect;
+                picFrame[lastSelected - 1].sprite = notSelect;
             }
-            touched = false; 
+            touched = false;
             lastSelected = selected;
         }
-        if(touched&&selected==0)
+        if (touched && selected == 0)
         {
-            for(int i=0;i<6;i++)
+            for (int i = 0; i < 6; i++)
             {
                 picFrame[i].sprite = notSelect;
 
@@ -127,18 +127,19 @@ public class itemChoser : MonoBehaviour
             lastSelected = 0;
         }
     }
-    
+
     /*
      * 约定一个物品的tag吧。
      * 每次往物品栏加入新物品的时候传入物品的图片item，以及该物品所对应的tag
      * 返回值：是否插入成功
      */
-    public bool AddNew(Sprite item,string tag)
+    public bool AddNew(Sprite item, string tag)
     {
-        if(capacity>=6)
+        if (capacity >= 6)
         {
             return false;
-        }else
+        }
+        else
         {
             Itempics[capacity].sprite = item;
             tags[capacity] = tag;
@@ -151,23 +152,24 @@ public class itemChoser : MonoBehaviour
      */
     public bool DeleteItem(string tag)
     {
-        if(capacity<=0)
+        if (capacity <= 0)
         {
             return false;
-        }else
+        }
+        else
         {
             Debug.Log("delete capacity");
             Debug.Log(capacity);
             bool findTag = false;
-            for(int i=0;i<capacity;i++)
+            for (int i = 0; i < capacity; i++)
             {
-                if(tags[i]==tag)
+                if (tags[i] == tag)
                 {
                     Debug.Log("where find tag");
                     Debug.Log(i);
                     findTag = true;
                 }
-                if(findTag)
+                if (findTag)
                 {
                     if (i + 1 < capacity)
                     {
@@ -176,7 +178,7 @@ public class itemChoser : MonoBehaviour
                     }
                 }
             }
-            if(findTag)
+            if (findTag)
             {
                 Itempics[capacity - 1].sprite = blank;
             }
@@ -186,15 +188,15 @@ public class itemChoser : MonoBehaviour
     /*
      *得到物品栏中当前被选中的物品的tag，若未选中，返回-1 
      */
-    public string GetSelected()
+    public bool Query(string tag)
     {
-        if (selected == 0)
+        for (int i = 0; i < 6; i++)
         {
-            return "no item";
+            if (tags[i] == tag)
+            {
+                return true;
+            }
         }
-        else
-        {
-            return tags[selected - 1];
-        }
+        return false;
     }
 }

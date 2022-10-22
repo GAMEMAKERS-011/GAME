@@ -15,6 +15,10 @@ public class Cat_controller : MonoBehaviour
     private bool down;
     private bool isGround;//1:可以跳跃，2：不可以  
                           // public GameObject itemList;
+    public GameObject character;    //link to the person character
+    public GameObject itemBar;      //link to the item bar
+    public GameObject charaChooser;  //link to the chara chooser
+
     void Start()
     {
         dire = 1;//初始化时候向右为正方向
@@ -84,6 +88,23 @@ public class Cat_controller : MonoBehaviour
         {
             Debug.Log("Walk Right end");
             walk = false;
+        }
+        if (Vector3.Distance(character.transform.position, transform.position) < 100)
+        {
+            //人物走进
+            if(Input.GetButtonDown("InteractButton"))
+            {
+                //按下x
+                if(itemBar.GetComponent<itemChoser>().Query("milk"))
+                {
+                    //如果物品栏中有牛奶
+                    //to-do : 调用猫吃东西的动画
+                    itemBar.GetComponent<itemChoser>().DeleteItem("milk");
+                    //charaChooser.GetComponent<Chara_Chooser>().SetAnimal(, "milk");   (差图片)
+
+                }
+
+            }
         }
         SwitchAnim();
         walker();
