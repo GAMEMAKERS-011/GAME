@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class Chara_Chooser : MonoBehaviour
 {
     public Sprite Animal;
+    private string animalTag;
+    private string personTag;
     public Sprite Person;
     public Image BigImg;
     public Image SmallImg;
@@ -13,6 +15,8 @@ public class Chara_Chooser : MonoBehaviour
     void Start()
     {
         curChar = 1; //1 person,-1 animal
+        animalTag = null;
+        personTag = null;
     }
 
     // Update is called once per frame
@@ -28,12 +32,34 @@ public class Chara_Chooser : MonoBehaviour
     {
         if(curChar==1)
         {
-            BigImg.sprite = Animal;
-            SmallImg.sprite = Person;
-        }else
-        {
             BigImg.sprite = Person;
             SmallImg.sprite =Animal;
+           
+        }else
+        {
+             BigImg.sprite = Animal;
+            SmallImg.sprite = Person;
         }
+    }
+    public void SetAnimal(Sprite animal,string tag)
+    {
+        Animal = animal;
+        animalTag = tag;
+
+    }
+    public string GetSelected()
+    {
+        if(curChar==1)
+        {
+            return personTag;
+        }else
+        {
+            return animalTag;
+        }
+    }
+    public void SetPerson(Sprite person,string tag)
+    {
+        Person = person;
+        personTag = tag;
     }
 }

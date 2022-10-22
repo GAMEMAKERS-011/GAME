@@ -12,7 +12,7 @@ public class itemChoser : MonoBehaviour
     public Image[] picFrame;
     public Image[] Itempics;
 
-    private int[] tags;
+    private string[] tags;
     private Sprite mySprite;//物品栏方框
     private Sprite notSelect;//物品栏被选中方框
     private Sprite blank;//空图片
@@ -25,10 +25,10 @@ public class itemChoser : MonoBehaviour
         notSelect = Resources.Load("block", typeof(Sprite)) as Sprite;
         blank= Resources.Load("blank", typeof(Sprite)) as Sprite;
         capacity = 0;
-        tags = new int[6];
+        tags = new string[6];
         for(int i=0;i<6;i++)
         {
-            tags[i] = -1;
+            tags[i] = "";
         }
        
     }
@@ -133,7 +133,7 @@ public class itemChoser : MonoBehaviour
      * 每次往物品栏加入新物品的时候传入物品的图片item，以及该物品所对应的tag
      * 返回值：是否插入成功
      */
-    public bool AddNew(Sprite item,int tag)
+    public bool AddNew(Sprite item,string tag)
     {
         if(capacity>=6)
         {
@@ -149,7 +149,7 @@ public class itemChoser : MonoBehaviour
     /*
      * 输入物品的tag，返回删除是否成功的bool
      */
-    public bool DeleteItem(int tag)
+    public bool DeleteItem(string tag)
     {
         if(capacity<=0)
         {
@@ -186,11 +186,11 @@ public class itemChoser : MonoBehaviour
     /*
      *得到物品栏中当前被选中的物品的tag，若未选中，返回-1 
      */
-    public int GetSelected()
+    public string GetSelected()
     {
         if (selected == 0)
         {
-            return -1;
+            return "no item";
         }
         else
         {
