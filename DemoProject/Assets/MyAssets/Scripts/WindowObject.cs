@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StaticInteractiveObject : MonoBehaviour
+public class WindowObject : MonoBehaviour
 {
     //public string infoMsg = ""; // the variable that holds the object information to display in the pop-up window
     public GameObject character;    // link an instance of the character to calculate the distance
@@ -17,7 +17,7 @@ public class StaticInteractiveObject : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 5)
+        if (Vector3.Distance(character.transform.position, transform.position) < 50)
         {
             // need to change input manager in player setting
             if(Input.GetButtonDown("InteractButton"))
