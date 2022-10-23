@@ -24,24 +24,31 @@ public class Chara_Chooser : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            curChar = curChar * (-1);SwitchPic();
+            curChar = curChar * (-1); SwitchPic();
         }
-        
+
     }
     void SwitchPic()
     {
-        if(curChar==1)
+        if (curChar == 1)
         {
-            BigImg.sprite = Person;
-            SmallImg.sprite =Animal;
-           
-        }else
+            if (personTag != null)
+            {
+                BigImg.sprite = Person;
+                SmallImg.sprite = Animal;
+
+            }
+        }
+        else
         {
-             BigImg.sprite = Animal;
-            SmallImg.sprite = Person;
+            if (animalTag != null)
+            {
+                BigImg.sprite = Animal;
+                SmallImg.sprite = Person;
+            }
         }
     }
-    public void SetAnimal(Sprite animal,string tag)
+    public void SetAnimal(Sprite animal, string tag)
     {
         Animal = animal;
         animalTag = tag;
@@ -49,15 +56,16 @@ public class Chara_Chooser : MonoBehaviour
     }
     public string GetSelected()
     {
-        if(curChar==1)
+        if (curChar == 1)
         {
             return personTag;
-        }else
+        }
+        else
         {
             return animalTag;
         }
     }
-    public void SetPerson(Sprite person,string tag)
+    public void SetPerson(Sprite person, string tag)
     {
         Person = person;
         personTag = tag;

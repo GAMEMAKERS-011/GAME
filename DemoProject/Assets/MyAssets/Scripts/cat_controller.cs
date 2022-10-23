@@ -31,13 +31,7 @@ public class Cat_controller : MonoBehaviour
     }
     void Update()
     {
-        // 创建一个 Vector2 对象 position，用来获取当前对象的位置
-        //Vector2 position = transform.position;
-        // 更改 position 的 x 坐标值，让其 加上 0.05
-        // position.x = position.x + 0.05f;
-        // 更新当前对象的位置到新位置
-        //transform.position = position;
-        // transform.Translate(new Vector3(speed,speed ,speed ) * Time.deltaTime, Space.World);
+        
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
         {
             if (isGround)
@@ -89,6 +83,13 @@ public class Cat_controller : MonoBehaviour
             Debug.Log("Walk Right end");
             walk = false;
         }
+        //测试动画效果的if，后期会删掉
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Debug.Log("cat eat");
+            anim.SetFloat("eat", 1);
+          
+        }
         if (Vector3.Distance(character.transform.position, transform.position) < 100)
         {
             //人物走进
@@ -99,7 +100,8 @@ public class Cat_controller : MonoBehaviour
                 {
                     //如果物品栏中有牛奶
                     //to-do : 调用猫吃东西的动画
-                    itemBar.GetComponent<itemChoser>().DeleteItem("milk");
+                 //   anim.SetFloat("eat", 1);
+                  //  itemBar.GetComponent<itemChoser>().DeleteItem("milk");
                     //charaChooser.GetComponent<Chara_Chooser>().SetAnimal(, "milk");   (差图片)
 
                 }
@@ -110,8 +112,17 @@ public class Cat_controller : MonoBehaviour
         walker();
         jumper();
     }
+    void eatend()
+    {
+        Debug.Log("eat end");
+        anim.SetFloat("eat", 0); //anim.SetFloat("idle", 1);
+    }
     void SwitchAnim()
     {
+        if(anim.GetFloat("idle")==1)
+        {
+            anim.SetFloat("idle", 0);
+        }
         if (anim.GetFloat("fall") == 1 && isGround)
         {
             anim.SetFloat("idle", 1);
