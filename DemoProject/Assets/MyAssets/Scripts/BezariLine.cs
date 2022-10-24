@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+//暴露了多个公共函数
+//注意绘制坐标的转换
+//LineRender使用的是像素坐标？
 public class BezariLine : MonoBehaviour
 {
 	private LineRenderer lineRenderer;
@@ -13,8 +16,28 @@ public class BezariLine : MonoBehaviour
 	private Vector3 result;
 	private List<Vector3> resultList = new List<Vector3> ();
 	private float tvalue;
-	public float width = 2.0f;
-	public Color color = new Color (0,0,0,1);
+	private float width = 2.0f;
+	private Color color = new Color (0,0,0,1);
+
+	public void setColor(Color col){
+		color = col;
+	}
+
+	//p0 1 2是从右到左侧 右侧断点可动 
+	//p1根据0和2调节位置
+	public void setPostions(List<Vector3> posArray){
+		p0 = posArray[0];
+		p1 = posArray[1];
+		p2 = posArray[2];
+	}
+	
+	public void setPos0(Vector3 p_0){
+		p0 = p_0;
+	}
+
+	public void setWidth(float wid){
+		width = wid;
+	}
 
     // Start is called before the first frame update
     void Start()
@@ -50,9 +73,9 @@ public class BezariLine : MonoBehaviour
 			Vector3 mousePosiInWorld = Camera.main.ScreenToWorldPoint(
 				mousePosInScreen
 			);
-			Debug.Log(mousePosiInWorld);
+			// Debug.Log(mousePosiInWorld);
 			p0 = mousePosiInWorld;
-
+			UpdateP1();
 			CalculatePosition();
 			lineRenderer.widthMultiplier = width;
 			lineRenderer.positionCount = resultList.ToArray ().Length;
@@ -61,7 +84,10 @@ public class BezariLine : MonoBehaviour
 
     }
 
+	//指定方法构造p2点位置
+	void UpdateP1(){
 
+	}
 
 	void CalculatePosition(){
 		result = new Vector3 ();
