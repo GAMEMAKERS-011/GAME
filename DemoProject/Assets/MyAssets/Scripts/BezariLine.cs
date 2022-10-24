@@ -16,8 +16,9 @@ public class BezariLine : MonoBehaviour
 	private Vector3 result;
 	private List<Vector3> resultList = new List<Vector3> ();
 	private float tvalue;
-	private float width = 2.0f;
+	private float width = 0.05f;
 	private Color color = new Color (0,0,0,1);
+	private bool moved = false;
 
 	public void setColor(Color col){
 		color = col;
@@ -35,51 +36,45 @@ public class BezariLine : MonoBehaviour
 		p0 = p_0;
 	}
 
-	public void setWidth(float wid){
-		width = wid;
-	}
 
     // Start is called before the first frame update
     void Start()
     {
-		Debug.Log("Start");
         lineRenderer = gameObject.AddComponent<LineRenderer>();
 		lineRenderer = gameObject.GetComponent<LineRenderer> ();
 		lineRenderer.startColor = color;
 		lineRenderer.endColor = color;
-		lineRenderer.startWidth = 0.02f;
-		lineRenderer.endWidth = 0.02f;
-		
-		p0 = new Vector3 (0, 0, 0);
-		p1 = new Vector3 (0, -2, 0);
-		p2 = new Vector3 (5, 0, 0);
+		// lineRenderer.startWidth = width;
+		// lineRenderer.endWidth = width;
+		lineRenderer.widthMultiplier = width;
+		p0 = new Vector3 (33, 12, 0);
+		p1 = new Vector3 (38, 10, 0);
+		p2 = new Vector3 (48, 10, 0);
 
 
 		p3 = new Vector3 (0,-5,0);
 
-		// CalculatePosition();
-		// lineRenderer.positionCount = resultList.ToArray ().Length;
-		// lineRenderer.SetPositions(resultList.ToArray());
-		
-		
+		CalculatePosition();
+		lineRenderer.positionCount = resultList.ToArray ().Length;
+		lineRenderer.SetPositions(resultList.ToArray());
+			
 
     }
 
     // Update is called once per frame
     void Update()
     {
-		if(Input.GetMouseButtonDown(0)){
+		if(moved){
 			Vector3 mousePosInScreen = Input.mousePosition;
 			Vector3 mousePosiInWorld = Camera.main.ScreenToWorldPoint(
 				mousePosInScreen
 			);
-			// Debug.Log(mousePosiInWorld);
 			p0 = mousePosiInWorld;
 			UpdateP1();
 			CalculatePosition();
 			lineRenderer.widthMultiplier = width;
 			lineRenderer.positionCount = resultList.ToArray ().Length;
-			lineRenderer.SetPositions(resultList.ToArray());
+			lineRenderer.SetPositions(resultList.ToArray());		
 		}
 
     }
@@ -91,18 +86,21 @@ public class BezariLine : MonoBehaviour
 
 	void CalculatePosition(){
 		result = new Vector3 ();
-		tvalue = 0.001f;
-		int count = 0;
+		tvalue = 0.1f;
+		float gap = tvalue;
+		int count = 2;
 		while (resultList.ToArray ().Length!=0){
 			resultList.Remove(resultList[0]);
 		}
-		for(;tvalue <= 1.0f;tvalue+=0.001f,count+=1){
+		resultList.Add(p0);
+		for(;tvalue <= 1.0f;tvalue+=gap,count+=1){
 			result.x = Mathf.Pow (1 - tvalue, 2) * p0.x + 2 * tvalue * Mathf.Pow (1 - tvalue, 1) * p1.x + Mathf.Pow (tvalue, 2) * p2.x;
 			result.y = Mathf.Pow (1 - tvalue, 2) * p0.y + 2 * tvalue * Mathf.Pow (1 - tvalue, 1) * p1.y + Mathf.Pow (tvalue, 2) * p2.y;
-			result.z = Mathf.Pow (1 - tvalue, 2) * p0.z + 2 * tvalue * Mathf.Pow (1 - tvalue, 1) * p1.z + Mathf.Pow (tvalue, 2) * p2.z;
+			result.z = 0;
 			resultList.Add(result);
 
 		}
+		resultList.Add(p2);
 
 	}
 
