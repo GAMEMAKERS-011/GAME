@@ -81,11 +81,13 @@ public class CupsObject : MonoBehaviour
                 {
                     obj.SetActive(false);
                     words.SetActive(true);
+                    words.GetComponent<Words>().StartPlay(0);
                 }
                 else if(choose[0]==-1 && choose[1]!= -1)
                 {
                     obj.SetActive(false);
                     words.SetActive(true);
+                    words.GetComponent<Words>().StartPlay(0);
                 }
             }
         }
