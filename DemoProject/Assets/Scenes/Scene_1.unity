@@ -1042,6 +1042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  inActive: 0
 --- !u!50 &284212115
 Rigidbody2D:
   serializedVersion: 4
@@ -2928,6 +2929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpForce: 10
+  inActive: 0
 --- !u!95 &614317030
 Animator:
   serializedVersion: 4
@@ -3446,6 +3448,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08b555a46f2baf14a8146d8661b75bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  jumpForce: 10
+  inActive: 0
+  character: {fileID: 0}
+  itemBar: {fileID: 0}
+  charaChooser: {fileID: 0}
 --- !u!1 &758352012
 GameObject:
   m_ObjectHideFlags: 0
@@ -5523,6 +5531,10 @@ MonoBehaviour:
   Person: {fileID: 21300000, guid: 62aab9d0b7eea6d46a98bc6bfb5f255e, type: 3}
   BigImg: {fileID: 1782977927}
   SmallImg: {fileID: 162515887}
+  girl: {fileID: 614317028}
+  cat: {fileID: 284212113}
+  dog: {fileID: 0}
+  pigeon: {fileID: 284212113}
 --- !u!95 &1330649650
 Animator:
   serializedVersion: 4

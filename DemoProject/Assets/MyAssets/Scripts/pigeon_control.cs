@@ -5,6 +5,7 @@ using UnityEngine;
 public class pigeon_control : MonoBehaviour
 {
     public float speed;
+    public bool inActive;
     private Animator anim;
     private Rigidbody2D rig;
     private SpriteRenderer sr;
@@ -22,71 +23,81 @@ public class pigeon_control : MonoBehaviour
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        inActive = true;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isGround)
+
+        if (isGround)
         {
             anim.SetFloat("flying", 0);
             iffly = false;
-            
-        }else
+
+        }
+        else
         {
             anim.SetFloat("flying", 1);
             iffly = true;
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (!inActive)
         {
+            flyup = false; flydown = false; flying = false;
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
                 Debug.Log("fly up");
-                flyup = true;flydown = false;
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            Debug.Log("fly up end");
-            flyup = false;
-        }
+                flyup = true; flydown = false;
+            }
+            if (Input.GetKeyUp(KeyCode.UpArrow))
+            {
+                Debug.Log("fly up end");
+                flyup = false;
+            }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("fly down");
-         
-            flydown = true;flyup = false;
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            Debug.Log("fly down");
-            flydown = false;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("fly down");
 
-            Debug.Log("Fly Left");
-            flying = true;
-            dir = -1;
+                flydown = true; flyup = false;
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                Debug.Log("fly down");
+                flydown = false;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
 
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
+                Debug.Log("Fly Left");
+                flying = true;
+                dir = -1;
 
-            Debug.Log("Fly Right");
-            flying = true;
-            dir = 1;
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
 
+                Debug.Log("Fly Right");
+                flying = true;
+                dir = 1;
+
+            }
+            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                Debug.Log("fly Left end");
+                flying = false;
+            }
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                Debug.Log("fly Right end");
+                flying = false;
+            }
+            fly();
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            Debug.Log("fly Left end");
-            flying = false;
-        }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            Debug.Log("fly Right end");
-            flying = false;
-        }
-        fly();
     }
     void fly()
     {
@@ -94,28 +105,29 @@ public class pigeon_control : MonoBehaviour
         float vecY = rig.velocity.y;
         if (flying)
         {
-            if(dire*dir<0)
+            if (dire * dir < 0)
             {
                 dire = -dire;
-                transform.localScale = new Vector3(dire, 1, 1);
+                Vector3 cur = transform.localScale;
+                transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
             }
-            if(flyup)
+            if (flyup)
             {
-                vecY= speed;
+                vecY = speed;
 
             }
-          
-           rig.velocity = new Vector2(dire*speed, vecY);
+
+            rig.velocity = new Vector2(dire * speed, vecY);
 
         }
-        if(!flying)
+        if (!flying)
         {
             rig.velocity = new Vector2(0, rig.velocity.y);
         }
-        if (flyup&&!flying)
+        if (flyup && !flying)
         {
             Debug.Log("fly r/l end");
-           rig.velocity = new Vector2(rig.velocity.x, speed);
+            rig.velocity = new Vector2(rig.velocity.x, speed);
 
         }
 
