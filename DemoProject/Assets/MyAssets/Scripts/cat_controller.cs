@@ -6,10 +6,12 @@ public class Cat_controller : MonoBehaviour
 {
     public int speed;
     public int jumpForce;
+    public bool inActive;
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
     private Animator anim;
     private Rigidbody2D rig;
+
     private bool walk;
     private bool jump;
     private bool down;
@@ -24,105 +26,121 @@ public class Cat_controller : MonoBehaviour
         dire = 1;//初始化时候向右为正方向
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
+
         //anim.SetBool("test", false);
         jump = false;
         walk = false;
+        inActive = true;
 
     }
     void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+        if (!inActive)
         {
-            if (isGround)
-            {
-                Debug.Log("jump pressed or up");
-                jump = true;
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("jump press end");
             jump = false;
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("Down Ward");
-            //  Sprite girl=Resources.Load("girl", typeof(Sprite)) as Sprite;
-            // itemList.GetComponent<itemChoser>().AddNew(girl, 2);
-            down = true;
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            Debug.Log("Down Ward end");
-            down = false;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-
-            Debug.Log("Walk Left");
-            walk = true;
-            dir = -1;
-
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-
-            Debug.Log("Walk Right");
-            walk = true;
-            dir = 1;
-
-        }
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            Debug.Log("Walk Left end");
             walk = false;
+            anim.SetFloat("fall", 0); anim.SetFloat("walk", 0);
+            anim.SetFloat("idle", 1); anim.SetFloat("eat", 0);
+            anim.SetFloat("jump", 0);
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+        else
         {
-            Debug.Log("Walk Right end");
-            walk = false;
-        }
-        //测试动画效果的if，后期会删掉
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("cat eat");
-            anim.SetFloat("eat", 1);
-          
-        }
-        if (Vector3.Distance(character.transform.position, transform.position) < 100)
-        {
-            //人物走进
-            if(Input.GetButtonDown("InteractButton"))
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
-                //按下x
-                if(itemBar.GetComponent<itemChoser>().Query("milk"))
+                if (isGround)
                 {
-                    //如果物品栏中有牛奶
-                    //to-do : 调用猫吃东西的动画
-                 //   anim.SetFloat("eat", 1);
-                  //  itemBar.GetComponent<itemChoser>().DeleteItem("milk");
-                    //charaChooser.GetComponent<Chara_Chooser>().SetAnimal(, "milk");   (差图片)
+                    Debug.Log("jump pressed or up");
+                    jump = true;
+                }
+            }
+            if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("jump press end");
+                jump = false;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("Down Ward");
+                //  Sprite girl=Resources.Load("girl", typeof(Sprite)) as Sprite;
+                // itemList.GetComponent<itemChoser>().AddNew(girl, 2);
+                down = true;
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                Debug.Log("Down Ward end");
+                down = false;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+
+                Debug.Log("Walk Left");
+                walk = true;
+                dir = -1;
+
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+
+                Debug.Log("Walk Right");
+                walk = true;
+                dir = 1;
+
+            }
+            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                Debug.Log("Walk Left end");
+                walk = false;
+            }
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                Debug.Log("Walk Right end");
+                walk = false;
+            }
+            //测试动画效果的if，后期会删掉
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("cat eat");
+                anim.SetFloat("eat", 1);
+
+            }
+            if (Vector3.Distance(character.transform.position, transform.position) < 100)
+            {
+                //人物走进
+                if (Input.GetButtonDown("InteractButton"))
+                {
+                    //按下x
+                    if (itemBar.GetComponent<itemChoser>().Query("milk"))
+                    {
+                        //如果物品栏中有牛奶
+                        //to-do : 调用猫吃东西的动画
+                        //   anim.SetFloat("eat", 1);
+                        //  itemBar.GetComponent<itemChoser>().DeleteItem("milk");
+                        //charaChooser.GetComponent<Chara_Chooser>().SetAnimal(, "milk");   (差图片)
+
+                    }
 
                 }
-
             }
+            SwitchAnim();
+            walker();
+            jumper();
         }
-        SwitchAnim();
-        walker();
-        jumper();
+    }
+    void inIdle()
+    {
+        if (anim.GetFloat("idle") == 1)
+        {
+            anim.SetFloat("idle", 0);
+        }
     }
     void eatend()
     {
         Debug.Log("eat end");
-        anim.SetFloat("eat", 0); //anim.SetFloat("idle", 1);
+        anim.SetFloat("eat", 0);
+        anim.SetFloat("idle", 1);
     }
     void SwitchAnim()
     {
-        if(anim.GetFloat("idle")==1)
-        {
-            anim.SetFloat("idle", 0);
-        }
         if (anim.GetFloat("fall") == 1 && isGround)
         {
             anim.SetFloat("idle", 1);
@@ -163,7 +181,8 @@ public class Cat_controller : MonoBehaviour
                 if (dir * dire < 0)
                 {
                     dire = -dire;
-                    transform.localScale = new Vector3(dire, 1, 1);
+                    Vector3 cur = transform.localScale;
+                    transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
                 }
 
                 rig.velocity = new Vector2(dire * speed, rig.velocity.y);
@@ -177,7 +196,8 @@ public class Cat_controller : MonoBehaviour
                     if (dir * dire < 0)
                     {
                         dire = -dire;
-                        transform.localScale = new Vector3(dire, 1, 1);
+                        Vector3 cur = transform.localScale;
+                        transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
                     }
                     rig.velocity = new Vector2(dire * speed, rig.velocity.y);
                 }

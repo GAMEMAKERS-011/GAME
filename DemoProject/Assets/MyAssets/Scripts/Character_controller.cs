@@ -6,6 +6,7 @@ public class Character_controller : MonoBehaviour
 {
     public int speed;
     public int jumpForce;
+    public bool inActive;
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
     private Animator anim;
@@ -14,7 +15,8 @@ public class Character_controller : MonoBehaviour
     private bool jump;
     private bool down;
     private bool isGround;//1:可以跳跃，2：不可以  
-   // public GameObject itemList;
+
+    // public GameObject itemList;
     void Start()
     {
         dire = 1;//初始化时候向右为正方向
@@ -23,99 +25,103 @@ public class Character_controller : MonoBehaviour
         //anim.SetBool("test", false);
         jump = false;
         walk = false;
-        
+        inActive = true;
+
     }
     void FixedUpdate()
     {
-        // 创建一个 Vector2 对象 position，用来获取当前对象的位置
-        //Vector2 position = transform.position;
-        // 更改 position 的 x 坐标值，让其 加上 0.05
-        // position.x = position.x + 0.05f;
-        // 更新当前对象的位置到新位置
-        //transform.position = position;
-        // transform.Translate(new Vector3(speed,speed ,speed ) * Time.deltaTime, Space.World);
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+        if (!inActive)
         {
-            if (isGround)
+            jump = false; walk = false;
+            anim.SetFloat("walk", 0);
+            anim.SetFloat("idle", 1);
+            SwitchAnim();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("jump pressed or up");
-                jump = true;
+                if (isGround)
+                {
+                    Debug.Log("jump pressed or up");
+                    jump = true;
+                }
             }
-        }
-        if(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("jump press end");
-            jump = false;
-        }
-        if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            Debug.Log("Down Ward");
-          //  Sprite girl=Resources.Load("girl", typeof(Sprite)) as Sprite;
-           // itemList.GetComponent<itemChoser>().AddNew(girl, 2);
-            down = true;
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            Debug.Log("Down Ward end");
-            down = false;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-           
+            if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("jump press end");
+                jump = false;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("Down Ward");
+                //  Sprite girl=Resources.Load("girl", typeof(Sprite)) as Sprite;
+                // itemList.GetComponent<itemChoser>().AddNew(girl, 2);
+                down = true;
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                Debug.Log("Down Ward end");
+                down = false;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+
                 Debug.Log("Walk Left");
                 walk = true;
                 dir = -1;
-            
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-           
+
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+
                 Debug.Log("Walk Right");
                 walk = true;
                 dir = 1;
-            
+
+            }
+            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                Debug.Log("Walk Left end");
+                walk = false;
+            }
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                Debug.Log("Walk Right end");
+                walk = false;
+            }
+            SwitchAnim();
+            walker();
+            jumper();
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            Debug.Log("Walk Left end");
-            walk = false;
-        }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            Debug.Log("Walk Right end");
-            walk = false;
-        }
-        SwitchAnim();
-        walker();
-        jumper();
     }
     void SwitchAnim()
     {
-        if(anim.GetFloat("fall")==1&&isGround)
+        if (anim.GetFloat("fall") == 1 && isGround)
         {
-            anim.SetFloat("idle", 1); 
+            anim.SetFloat("idle", 1);
             anim.SetFloat("fall", 0);
 
         }
-        if (anim.GetFloat("jump")==1)
+        if (anim.GetFloat("jump") == 1)
         {
-            if(rig.velocity.y<0)//开始落地
+            if (rig.velocity.y < 0)//开始落地
             {
                 anim.SetFloat("jump", 0);
                 anim.SetFloat("fall", 1);
             }
             jump = false;
         }
-        if(!walk)
+        if (!walk)
         {
             anim.SetFloat("walk", 0);
         }
-        
+
     }
 
     void walker()
     {
-        if(walk)
+        if (walk)
         {
             if (isGround)
             {
@@ -127,24 +133,28 @@ public class Character_controller : MonoBehaviour
                  }
                  anim.SetFloat("walk", 1);
                  transform.Translate(Vector3.right * distance);*/
-                
-                if(dir*dire<0)
+
+                if (dir * dire < 0)
                 {
                     dire = -dire;
-                    transform.localScale = new Vector3(dire, 1, 1);
+                    Vector3 cur = transform.localScale;
+                    transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
+
                 }
-                
-                rig.velocity = new Vector2(dire*speed, rig.velocity.y);
+
+                rig.velocity = new Vector2(dire * speed, rig.velocity.y);
                 anim.SetFloat("walk", 1);
-                
-            }else
+
+            }
+            else
             {
                 if (jump)
                 {
                     if (dir * dire < 0)
                     {
                         dire = -dire;
-                        transform.localScale = new Vector3(dire, 1, 1);
+                        Vector3 cur = transform.localScale;
+                        transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
                     }
                     rig.velocity = new Vector2(dire * speed, rig.velocity.y);
                 }
@@ -153,23 +163,23 @@ public class Character_controller : MonoBehaviour
     }
     void jumper()
     {
-        if(jump)
+        if (jump)
         {
-            rig.velocity = new Vector2(rig.velocity.x, jumpForce); 
+            rig.velocity = new Vector2(rig.velocity.x, jumpForce);
             anim.SetFloat("jump", 1);
-            
+
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.transform.tag=="Ground")
+        if (collision.transform.tag == "Ground")
         {
             isGround = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.transform.tag=="Ground")
+        if (collision.transform.tag == "Ground")
         {
             isGround = false;
         }
