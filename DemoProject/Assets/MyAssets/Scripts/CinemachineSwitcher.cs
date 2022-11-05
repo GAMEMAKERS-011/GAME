@@ -9,8 +9,6 @@ public class CinemachineSwitcher : MonoBehaviour
     public GameObject chara_chooser;     // link to item_bar
     public GameObject cinemachine;
     public GameObject cat;  //link to possible candidates
-    public GameObject dog;
-    public GameObject pigeon; 
     public GameObject girl;
 
     void Start()
@@ -30,14 +28,6 @@ public class CinemachineSwitcher : MonoBehaviour
             if(tag == "cat")
             {
                 cm.Follow = cat.GetComponent<Transform>();
-            }
-            if(tag == "dog")
-            {
-                cm.Follow = dog.GetComponent<Transform>();
-            }
-            if(tag == "pigeon")
-            {
-                cm.Follow = pigeon.GetComponent<Transform>();
             }
             if(tag == "girl")
             {
