@@ -20,7 +20,7 @@ public class Chara_Chooser : MonoBehaviour
     void Start()
     {
         curChar = 1; //1 person,-1 animal
-        animalTag = null;
+        animalTag = "null";
         personTag = "girl";
         girl.GetComponent<Character_controller>().inActive = true;
         pigeon.GetComponent<pigeon_control>().inActive = false;
@@ -38,8 +38,8 @@ public class Chara_Chooser : MonoBehaviour
         if (curChar == 1)
         {
             girl.GetComponent<Character_controller>().inActive = true;
-            pigeon.GetComponent<pigeon_control>().inActive = false;
-            cat.GetComponent<Cat_controller>().inActive = false;
+            // pigeon.GetComponent<pigeon_control>().inActive = false;
+            cat.GetComponent<Cat_controller>().inActive = false;//todo:
         }
         else
         {
@@ -49,11 +49,11 @@ public class Chara_Chooser : MonoBehaviour
                 cat.GetComponent<Cat_controller>().inActive = true;
             }
             //  if (animalTag == "dog") { dog.inActive = true; girl.inActive = false; }
-            if (animalTag == "pigeon")
+            /*if (animalTag == "pigeon")
             {
                 girl.GetComponent<Character_controller>().inActive = false;
                 pigeon.GetComponent<pigeon_control>().inActive = true;
-            }
+            }*/
         }
     }
     void SwitchPic()

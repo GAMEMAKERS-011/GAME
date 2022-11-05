@@ -7,6 +7,8 @@ public class Character_controller : MonoBehaviour
     public int speed;
     public int jumpForce;
     public bool inActive;
+    public GameObject climber;
+    public bool climbEnd;
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
     private Animator anim;
@@ -15,6 +17,9 @@ public class Character_controller : MonoBehaviour
     private bool jump;
     private bool down;
     private bool isGround;//1:可以跳跃，2：不可以  
+    private bool hasLadder;//判断是否碰到梯子
+    private bool ladderEnd;//是否第一次远离梯子了
+    private bool ifclimb;//这个梯子是否爬过了
 
     // public GameObject itemList;
     void Start()
@@ -26,15 +31,21 @@ public class Character_controller : MonoBehaviour
         jump = false;
         walk = false;
         inActive = true;
+        hasLadder = false;//初始化时并不在梯子上
+        climbEnd = false;
+        climber.SetActive(false);
+        ladderEnd = true;
 
     }
-    void FixedUpdate()
+    void Update()
     {
+
         if (!inActive)
         {
             jump = false; walk = false;
             anim.SetFloat("walk", 0);
             anim.SetFloat("idle", 1);
+            rig.velocity = new Vector2(0, 0);
             SwitchAnim();
         }
         else
@@ -125,14 +136,6 @@ public class Character_controller : MonoBehaviour
         {
             if (isGround)
             {
-                /* float distance = speed * Time.deltaTime * dir;
-                 if (distance * dire < 0)
-                 {
-                     transform.localScale = new Vector3(-dire, 1, 1);
-                     dire = -dire;
-                 }
-                 anim.SetFloat("walk", 1);
-                 transform.Translate(Vector3.right * distance);*/
 
                 if (dir * dire < 0)
                 {
@@ -175,6 +178,8 @@ public class Character_controller : MonoBehaviour
         if (collision.transform.tag == "Ground")
         {
             isGround = true;
+            ifclimb = true;//碰到地面时，默认上次爬梯子结束
+            ladderEnd = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -184,6 +189,27 @@ public class Character_controller : MonoBehaviour
             isGround = false;
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "ladder" && ladderEnd)
+        {
+            Debug.Log("find ladder");
+            hasLadder = true;
+            inActive = false;
+            ladderEnd = false;
+
+            jump = false; walk = false;
+            anim.SetFloat("walk", 0);
+            anim.SetFloat("idle", 1);
+            rig.velocity = new Vector2(0, 0);
+
+
+            SendMessageUpwards("hasLadder", SendMessageOptions.DontRequireReceiver);
+            SwitchAnim();
+            Debug.Log("get ladder");
+        }
+    }
+
 
 
 

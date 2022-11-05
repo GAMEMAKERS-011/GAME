@@ -7,6 +7,8 @@ public class Cat_controller : MonoBehaviour
     public int speed;
     public int jumpForce;
     public bool inActive;
+    public bool Contact;
+
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
     private Animator anim;
@@ -15,26 +17,52 @@ public class Cat_controller : MonoBehaviour
     private bool walk;
     private bool jump;
     private bool down;
-    private bool isGround;//1:可以跳跃，2：不可以  
-                          // public GameObject itemList;
+    public bool isGround;//1:可以跳跃，2：不可以  
+                         // public GameObject itemList;
+    public bool nearCat;
+
     public GameObject character;    //link to the person character
     public GameObject itemBar;      //link to the item bar
     public GameObject charaChooser;  //link to the chara chooser
 
     void Start()
     {
-        dire = 1;//初始化时候向右为正方向
+        dire = -1;//初始化时候向左为正方向
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
 
         //anim.SetBool("test", false);
         jump = false;
         walk = false;
-        inActive = true;
+        inActive = false;
+        Contact = false;
 
     }
     void Update()
     {
+        if (nearCat)
+        {
+            Contact = false;
+            Debug.Log("near cat");
+            //人物走进
+            if (Input.GetKeyDown(KeyCode.X) || Contact)
+            {
+                Debug.Log("press x,add milk");
+                //按下x
+                if (itemBar.GetComponent<itemChoser>().Query("milk"))
+                {
+                    //如果物品栏中有牛奶
+                    //to-do : 调用猫吃东西的动画
+                    inActive = true;
+                    anim.SetFloat("eat", 1);
+                    itemBar.GetComponent<itemChoser>().DeleteItem("milk");
+                    Sprite blank = Resources.Load("girl", typeof(Sprite)) as Sprite;//还没图片，采用空图
+                    charaChooser.GetComponent<Chara_Chooser>().SetAnimal(blank, "cat");   //(差图片)
+
+                }
+
+            }
+        }
         if (!inActive)
         {
             jump = false;
@@ -96,35 +124,13 @@ public class Cat_controller : MonoBehaviour
                 Debug.Log("Walk Right end");
                 walk = false;
             }
-            //测试动画效果的if，后期会删掉
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Debug.Log("cat eat");
-                anim.SetFloat("eat", 1);
 
-            }
-            if (Vector3.Distance(character.transform.position, transform.position) < 100)
-            {
-                //人物走进
-                if (Input.GetButtonDown("InteractButton"))
-                {
-                    //按下x
-                    if (itemBar.GetComponent<itemChoser>().Query("milk"))
-                    {
-                        //如果物品栏中有牛奶
-                        //to-do : 调用猫吃东西的动画
-                        //   anim.SetFloat("eat", 1);
-                        //  itemBar.GetComponent<itemChoser>().DeleteItem("milk");
-                        //charaChooser.GetComponent<Chara_Chooser>().SetAnimal(, "milk");   (差图片)
 
-                    }
-
-                }
-            }
             SwitchAnim();
             walker();
             jumper();
         }
+
     }
     void inIdle()
     {
@@ -213,6 +219,13 @@ public class Cat_controller : MonoBehaviour
 
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            nearCat = true;
+        }
+    }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.transform.tag == "Ground")
@@ -225,6 +238,10 @@ public class Cat_controller : MonoBehaviour
         if (collision.transform.tag == "Ground")
         {
             isGround = false;
+        }
+        if (collision.transform.tag == "Player")
+        {
+            nearCat = false;
         }
     }
 

@@ -24,12 +24,13 @@ public class itemChoser : MonoBehaviour
         mySprite = Resources.Load("Selected", typeof(Sprite)) as Sprite;
         notSelect = Resources.Load("block", typeof(Sprite)) as Sprite;
         blank = Resources.Load("blank", typeof(Sprite)) as Sprite;
-        capacity = 0;
         tags = new string[6];
         for (int i = 0; i < 6; i++)
         {
             tags[i] = "";
         }
+        tags[0] = "milk";//初始化时人物有奶瓶
+        capacity = 1;//当前包含一个物品
 
     }
 
