@@ -4047,9 +4047,9 @@ MonoBehaviour:
   Contact: 0
   isGround: 0
   nearCat: 0
-  character: {fileID: 0}
-  itemBar: {fileID: 0}
-  charaChooser: {fileID: 0}
+  character: {fileID: 614317028}
+  itemBar: {fileID: 899341811}
+  charaChooser: {fileID: 1330649647}
 --- !u!1 &758352012
 GameObject:
   m_ObjectHideFlags: 0
@@ -6793,8 +6793,6 @@ MonoBehaviour:
   SmallImg: {fileID: 162515887}
   girl: {fileID: 614317028}
   cat: {fileID: 750578888}
-  dog: {fileID: 0}
-  pigeon: {fileID: 0}
 --- !u!95 &1330649650
 Animator:
   serializedVersion: 4
