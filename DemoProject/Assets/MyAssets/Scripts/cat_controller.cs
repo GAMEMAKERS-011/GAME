@@ -13,13 +13,13 @@ public class Cat_controller : MonoBehaviour
     private float dir;//键盘要求行进方向
     private Animator anim;
     private Rigidbody2D rig;
+    private BoxCollider2D coll;
 
     private bool walk;
     private bool jump;
     private bool down;
     public bool isGround;//1:可以跳跃，2：不可以  
                          // public GameObject itemList;
-    public bool nearCat;
 
     public GameObject character;    //link to the person character
     public GameObject itemBar;      //link to the item bar
@@ -30,7 +30,11 @@ public class Cat_controller : MonoBehaviour
         dire = -1;//初始化时候向左为正方向
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
-
+        coll = GetComponent<BoxCollider2D>();
+        
+        rig.simulated = false;
+        rig.freezeRotation = true;
+        coll.isTrigger = true;
         //anim.SetBool("test", false);
         jump = false;
         walk = false;
@@ -40,7 +44,7 @@ public class Cat_controller : MonoBehaviour
     }
     void Update()
     {
-        if (nearCat)
+        if (Vector3.Distance(character.transform.position, transform.position) < 100)
         {
             Contact = false;
             Debug.Log("near cat");
@@ -67,12 +71,21 @@ public class Cat_controller : MonoBehaviour
         {
             jump = false;
             walk = false;
+           
+           
+
+            //set cat animation to be idle
             anim.SetFloat("fall", 0); anim.SetFloat("walk", 0);
             anim.SetFloat("idle", 1); anim.SetFloat("eat", 0);
             anim.SetFloat("jump", 0);
+            SwitchAnim();
+
+           
         }
         else
         {
+            rig.simulated = true;
+            coll.isTrigger = false;
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
                 if (isGround)
@@ -173,6 +186,7 @@ public class Cat_controller : MonoBehaviour
     {
         if (walk)
         {
+            
             if (isGround)
             {
                 /* float distance = speed * Time.deltaTime * dir;
@@ -219,18 +233,18 @@ public class Cat_controller : MonoBehaviour
 
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            nearCat = true;
-        }
-    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.transform.tag == "Ground")
         {
             isGround = true;
+            if (!inActive)
+            {
+                rig.simulated = false;
+                coll.isTrigger = true;
+            }
+            
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -238,10 +252,6 @@ public class Cat_controller : MonoBehaviour
         if (collision.transform.tag == "Ground")
         {
             isGround = false;
-        }
-        if (collision.transform.tag == "Player")
-        {
-            nearCat = false;
         }
     }
 

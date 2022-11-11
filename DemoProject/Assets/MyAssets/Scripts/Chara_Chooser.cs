@@ -10,8 +10,6 @@ public class Chara_Chooser : MonoBehaviour
     public Image SmallImg;
     public GameObject girl;
     public GameObject cat;
-    public GameObject dog;
-    public GameObject pigeon;
     private string animalTag;
     private string personTag;
 
@@ -23,7 +21,6 @@ public class Chara_Chooser : MonoBehaviour
         animalTag = "null";
         personTag = "girl";
         girl.GetComponent<Character_controller>().inActive = true;
-        pigeon.GetComponent<pigeon_control>().inActive = false;
         cat.GetComponent<Cat_controller>().inActive = false;
     }
 
@@ -38,8 +35,7 @@ public class Chara_Chooser : MonoBehaviour
         if (curChar == 1)
         {
             girl.GetComponent<Character_controller>().inActive = true;
-            // pigeon.GetComponent<pigeon_control>().inActive = false;
-            cat.GetComponent<Cat_controller>().inActive = false;//todo:
+            cat.GetComponent<Cat_controller>().inActive = false;
         }
         else
         {
@@ -48,12 +44,6 @@ public class Chara_Chooser : MonoBehaviour
                 girl.GetComponent<Character_controller>().inActive = false;
                 cat.GetComponent<Cat_controller>().inActive = true;
             }
-            //  if (animalTag == "dog") { dog.inActive = true; girl.inActive = false; }
-            /*if (animalTag == "pigeon")
-            {
-                girl.GetComponent<Character_controller>().inActive = false;
-                pigeon.GetComponent<pigeon_control>().inActive = true;
-            }*/
         }
     }
     void SwitchPic()

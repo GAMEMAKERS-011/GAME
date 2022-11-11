@@ -9,10 +9,13 @@ public class Character_controller : MonoBehaviour
     public bool inActive;
     public GameObject climber;
     public bool climbEnd;
+
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
     private Animator anim;
     private Rigidbody2D rig;
+    private BoxCollider2D coll;
+
     private bool walk;
     private bool jump;
     private bool down;
@@ -20,6 +23,7 @@ public class Character_controller : MonoBehaviour
     private bool hasLadder;//判断是否碰到梯子
     private bool ladderEnd;//是否第一次远离梯子了
     private bool ifclimb;//这个梯子是否爬过了
+    
 
     // public GameObject itemList;
     void Start()
@@ -27,7 +31,8 @@ public class Character_controller : MonoBehaviour
         dire = 1;//初始化时候向右为正方向
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
-        //anim.SetBool("test", false);
+        coll = GetComponent<BoxCollider2D>();
+
         jump = false;
         walk = false;
         inActive = true;
@@ -36,6 +41,10 @@ public class Character_controller : MonoBehaviour
         climber.SetActive(false);
         ladderEnd = true;
 
+        //set can be collide
+        rig.simulated = true;
+        rig.freezeRotation = true;
+        coll.isTrigger = false;
     }
     void Update()
     {
@@ -43,13 +52,19 @@ public class Character_controller : MonoBehaviour
         if (!inActive)
         {
             jump = false; walk = false;
-            anim.SetFloat("walk", 0);
-            anim.SetFloat("idle", 1);
-            rig.velocity = new Vector2(0, 0);
+
+            if (anim.GetFloat("walk") == 1)
+            {
+                anim.SetFloat("walk", 0);anim.SetFloat("idle", 1);
+                rig.velocity = new Vector2(0, 0); 
+            } 
             SwitchAnim();
+
         }
         else
         {
+            rig.simulated = true;
+            coll.isTrigger = false;
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
                 if (isGround)
@@ -180,6 +195,11 @@ public class Character_controller : MonoBehaviour
             isGround = true;
             ifclimb = true;//碰到地面时，默认上次爬梯子结束
             ladderEnd = true;
+            if (!inActive)
+            {
+                rig.simulated = false;
+                coll.isTrigger = true;
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
