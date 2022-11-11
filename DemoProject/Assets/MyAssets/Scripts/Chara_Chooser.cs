@@ -35,7 +35,11 @@ public class Chara_Chooser : MonoBehaviour
         if (curChar == 1)
         {
             girl.GetComponent<Character_controller>().inActive = true;
+<<<<<<< HEAD
             cat.GetComponent<Cat_controller>().inActive = false;
+=======
+            cat.GetComponent<Cat_controller>().inActive = false;//todo:
+>>>>>>> 1c052d78760b8612883a8a90cc6a065014b8f943
         }
         else
         {

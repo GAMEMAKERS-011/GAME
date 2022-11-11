@@ -4309,6 +4309,10 @@ MonoBehaviour:
   inActive: 0
   Contact: 0
   isGround: 0
+<<<<<<< HEAD
+=======
+  nearCat: 0
+>>>>>>> 1c052d78760b8612883a8a90cc6a065014b8f943
   character: {fileID: 614317028}
   itemBar: {fileID: 899341811}
   charaChooser: {fileID: 1330649647}
