@@ -8,7 +8,7 @@ public class Words : MonoBehaviour
     public Text showtext;  //对话框的内容text
     public GameObject Log; //对话框的panel
 
-    public string[] texts={"内心戏", "一把钥匙，上面有些牙印。"};
+    public string[] texts;
     public float textSpeed = 0.05f; //每个字多久才能出现
 
     int index; //进行到了第几句话，用于实现基础功能
