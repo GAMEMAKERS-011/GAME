@@ -30,7 +30,7 @@ public class CupsObject : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 50)
+        if (Vector3.Distance(character.transform.position, transform.position) < 1000)
         {
             if(Input.GetKeyDown(KeyCode.LeftArrow) && now>0)
             {
@@ -81,13 +81,13 @@ public class CupsObject : MonoBehaviour
                 {
                     obj.SetActive(false);
                     words.SetActive(true);
-                    words.GetComponent<Words>().StartPlay(0);
+                    words.GetComponent<Words>().StartPlay(1);
                 }
                 else if(choose[0]==-1 && choose[1]!= -1)
                 {
                     obj.SetActive(false);
                     words.SetActive(true);
-                    words.GetComponent<Words>().StartPlay(0);
+                    words.GetComponent<Words>().StartPlay(1);
                 }
             }
         }

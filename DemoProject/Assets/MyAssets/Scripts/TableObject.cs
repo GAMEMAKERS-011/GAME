@@ -18,7 +18,7 @@ public class TableObject : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 50)
+        if (Vector3.Distance(character.transform.position, transform.position) < 5)
         {
             // need to change input manager in player setting
             if(Input.GetButtonDown("InteractButton"))

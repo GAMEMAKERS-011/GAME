@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class CofferObject : MonoBehaviour
 {
     public GameObject character;    // link an instance of the character to calculate the distance
-    public GameObject infoWindow;   // link the pop-up window
+    public GameObject notebook;   // link the pop-up window
+    public GameObject itemBar;
+    public GameObject obj;
     public SpriteRenderer sr;//组件
     public Sprite[] pic;//图片
     bool hasOpened = false;
@@ -14,7 +16,7 @@ public class CofferObject : MonoBehaviour
 
     void Start()
     {
-        infoWindow.SetActive(false);
+        notebook.SetActive(false);
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = pic[0];
     }
@@ -29,19 +31,25 @@ public class CofferObject : MonoBehaviour
                 Debug.Log("Close distance and button pressed!");
                 if(hasOpened == false)
                 {
-                    sr.sprite = pic[1];
-                    hasOpened = true;
+                    string tag = "keyB";
+                    bool s = itemBar.GetComponent<itemChoser>().Query(tag);
+                    if(s==true)
+                    {
+                        sr.sprite = pic[1];
+                        hasOpened = true;
+                    }
                 }
                 else
                 {
                     if(hasShowWindow)
                     {
-                        infoWindow.SetActive(false);
+                        notebook.SetActive(false);
                         hasShowWindow = false;
                     }
                     else
                     {
-                        infoWindow.SetActive(true);
+                        notebook.SetActive(true);
+                        notebook.GetComponent<Words>().StartPlay(0);
                         hasShowWindow = true;
                     }
                 }
