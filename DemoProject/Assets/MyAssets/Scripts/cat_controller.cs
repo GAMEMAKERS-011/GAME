@@ -5,6 +5,8 @@ using UnityEngine;
 public class Cat_controller : MonoBehaviour
 {
     public int speed;
+    public float maxSpeed;
+    public float acceleration;
     public int jumpForce;
     public bool inActive;
     public bool Contact;
@@ -99,18 +101,7 @@ public class Cat_controller : MonoBehaviour
                 Debug.Log("jump press end");
                 jump = false;
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Debug.Log("Down Ward");
-                //  Sprite girl=Resources.Load("girl", typeof(Sprite)) as Sprite;
-                // itemList.GetComponent<itemChoser>().AddNew(girl, 2);
-                down = true;
-            }
-            if (Input.GetKeyUp(KeyCode.DownArrow))
-            {
-                Debug.Log("Down Ward end");
-                down = false;
-            }
+
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
 
@@ -140,8 +131,8 @@ public class Cat_controller : MonoBehaviour
 
 
             SwitchAnim();
-            walker();
-            jumper();
+         //   walker();
+           // jumper();
         }
 
     }
@@ -158,6 +149,8 @@ public class Cat_controller : MonoBehaviour
         anim.SetFloat("eat", 0);
         anim.SetFloat("idle", 1);
     }
+
+
     void SwitchAnim()
     {
         if (anim.GetFloat("fall") == 1 && isGround)
@@ -175,65 +168,54 @@ public class Cat_controller : MonoBehaviour
             }
             jump = false;
         }
-        if (!walk)
+        if(!walk)
         {
             anim.SetFloat("walk", 0);
         }
 
     }
-
-    void walker()
+    void FixedUpdate()
     {
+
+        UpdateVelocity();
+        UpdateJump();
+        SwitchAnim();
+
+    }
+    void UpdateVelocity()
+    {
+        Vector3 cur = transform.localScale;//获取当前localSacle的参数，允许人物大小随意调节
+        Vector2 curVelocity = rig.velocity; //当前运动速度
+        if (dir * dire < 0)//行走方向与原方向不符合
+        {
+            transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
+            dire = dir;
+        }
+
         if (walk)
         {
-            
-            if (isGround)
-            {
-                /* float distance = speed * Time.deltaTime * dir;
-                 if (distance * dire < 0)
-                 {
-                     transform.localScale = new Vector3(-dire, 1, 1);
-                     dire = -dire;
-                 }
-                 anim.SetFloat("walk", 1);
-                 transform.Translate(Vector3.right * distance);*/
-
-                if (dir * dire < 0)
-                {
-                    dire = -dire;
-                    Vector3 cur = transform.localScale;
-                    transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
-                }
-
-                rig.velocity = new Vector2(dire * speed, rig.velocity.y);
-                anim.SetFloat("walk", 1);
-
-            }
-            else
-            {
-                if (jump)
-                {
-                    if (dir * dire < 0)
-                    {
-                        dire = -dire;
-                        Vector3 cur = transform.localScale;
-                        transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
-                    }
-                    rig.velocity = new Vector2(dire * speed, rig.velocity.y);
-                }
-            }
+            curVelocity.x += dir * acceleration * Time.fixedDeltaTime;
+            curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//防止超出maxSpeed限制
+            rig.velocity = curVelocity;
+            float animSpeed = Mathf.Abs(curVelocity.x) / maxSpeed;
+            anim.SetFloat("walk", animSpeed);//设置动画速度
         }
+
+
+
     }
-    void jumper()
+    void UpdateJump()
     {
-        if (jump)
+        if (isGround && jump)//a jump begin
         {
-            rig.velocity = new Vector2(rig.velocity.x, jumpForce);
+            rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            jump = false;//一次jump仅改变一次jumpForce
+            anim.SetFloat("idle", 0);
+            anim.SetFloat("fall", 0);
             anim.SetFloat("jump", 1);
 
         }
     }
-
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.transform.tag == "Ground")

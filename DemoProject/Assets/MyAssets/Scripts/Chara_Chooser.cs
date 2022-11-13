@@ -29,7 +29,10 @@ public class Chara_Chooser : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            curChar = curChar * (-1); SwitchPic();
+            if (animalTag != "null")
+            {
+                curChar = curChar * (-1); SwitchPic();
+            }
         }
         //人物可动性控制
         if (curChar == 1)
