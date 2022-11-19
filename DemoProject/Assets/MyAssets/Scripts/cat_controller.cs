@@ -49,7 +49,7 @@ public class Cat_controller : MonoBehaviour
         if (Vector3.Distance(character.transform.position, transform.position) < 100)
         {
             Contact = false;
-            Debug.Log("near cat");
+            
             //人物走进
             if (Input.GetKeyDown(KeyCode.X) || Contact)
             {

@@ -7,6 +7,8 @@ public class ZAnimationObject : MonoBehaviour
 {
     public GameObject character;    // link an instance of the character to calculate the distance
     public GameObject animi;
+    public GameObject manager;
+
     bool hasPlayed = false;
 
     void Start()
@@ -23,6 +25,10 @@ public class ZAnimationObject : MonoBehaviour
             // need to change input manager in player setting
             if (Input.GetButtonDown("ZButton"))
             {
+                if(transform.tag=="shirt")
+                {
+                    manager.GetComponent<manager>().shirtCount += 1;
+                }
                 Debug.Log("Close distance and z button pressed!");
                 if (hasPlayed == false)
                 {
@@ -34,6 +40,7 @@ public class ZAnimationObject : MonoBehaviour
             }
         }
     }
+   
     IEnumerator enumerator()
     {
         yield return new WaitForSeconds(0.3f);

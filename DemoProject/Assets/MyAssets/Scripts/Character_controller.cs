@@ -9,9 +9,10 @@ public class Character_controller : MonoBehaviour
     public float acceleration;
     public int jumpForce;
     public bool inActive;
-    public GameObject climber;
     public GameObject itemBar;
+    public GameObject manager;
     public bool climbEnd;
+    public bool ladderCanUse;
 
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
@@ -28,30 +29,43 @@ public class Character_controller : MonoBehaviour
     private bool ladderEnd;//是否第一次远离梯子了
     private bool ifclimb;//这个梯子是否爬过了
     private bool nearRope;
+    private bool nearTree;//靠近树
+    public void SetDir(int fdir)//从树上跳下
+    {
+        jump = false;
+        walk = true;
+        dir = fdir;
+        Vector2 curp = transform.position;curp[0] = curp[0] + 3;
+        transform.position = curp;
+        FixedUpdate();
 
+
+    }
     // public GameObject itemList;
     void Start()
     {
         dire = 1;//初始化时候向右为正方向\
-      
+
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
-        
+
 
         jump = false;
         walk = false;
         inActive = true;
         hasLadder = false;//初始化时并不在梯子上
         climbEnd = false;
-        climber.SetActive(false);
+
         ladderEnd = true;
         nearRope = false;
+        nearTree = false;
 
         //set can be collide
         rig.simulated = true;
         rig.freezeRotation = true;
         coll.isTrigger = false;
+
     }
     void Update()
     {
@@ -71,27 +85,45 @@ public class Character_controller : MonoBehaviour
         {
             rig.simulated = true;
             coll.isTrigger = false;
-            if(nearRope)
+            if (nearRope)
             {
                 if (Input.GetKeyDown(KeyCode.X))
                 {
                     Debug.Log("press x,use rope");
                     //按下x
-                    if (itemBar.GetComponent<itemChoser>().Query("hanger"))
+                    int count = manager.GetComponent<manager>().shirtCount;
+                    if (itemBar.GetComponent<itemChoser>().Query("hanger")&&count>=2)
                     {
-                       
+
                         itemBar.GetComponent<itemChoser>().DeleteItem("hanger");
                         SendMessageUpwards("SliderBegin", SendMessageOptions.DontRequireReceiver);
-
-
                     }
 
                 }
             }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("jump pressed or up");
-                jump = true;
+                if (nearTree)
+                {
+                    Debug.Log("find tree and prepare to climb");
+                    inActive = false;
+                    jump = false; walk = false;
+                    anim.SetFloat("walk", 0);
+                    anim.SetFloat("idle", 1);
+                    anim.SetFloat("jump", 0);
+                    rig.velocity = new Vector2(0, 0);
+                    SendMessageUpwards("girlToClimb", SendMessageOptions.DontRequireReceiver);
+                    SwitchAnim();
+                }
+                else
+                {
+                    if(hasLadder&&ladderCanUse)
+                    {
+                        SendMessageUpwards("hasLadder", SendMessageOptions.DontRequireReceiver);
+                    }
+                    Debug.Log("jump pressed or up");
+                    jump = true;
+                }
             }
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.Space))
             {
@@ -103,40 +135,43 @@ public class Character_controller : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
 
-                Debug.Log("Walk Left");
+                //   Debug.Log("Walk Left");
                 walk = true;
                 dir = -1;
+
 
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
 
-                Debug.Log("Walk Right");
+                //   Debug.Log("Walk Right");
                 walk = true;
                 dir = 1;
+
 
             }
             if (Input.GetKeyUp(KeyCode.LeftArrow))
             {
-                Debug.Log("Walk Left end");
+                //   Debug.Log("Walk Left end");
                 walk = false;
 
             }
             if (Input.GetKeyUp(KeyCode.RightArrow))
             {
-                Debug.Log("Walk Right end");
+                //   Debug.Log("Walk Right end");
                 walk = false;
             }
 
             //    walker();
             //  jumper();
+
             SwitchAnim();
         }
     }
 
     void FixedUpdate()
     {
-       
+
         UpdateVelocity();
         UpdateJump();
         SwitchAnim();
@@ -146,7 +181,7 @@ public class Character_controller : MonoBehaviour
     {
         Vector3 cur = transform.localScale;//获取当前localSacle的参数，允许人物大小随意调节
         Vector2 curVelocity = rig.velocity; //当前运动速度
-        if(dir*dire<0)//行走方向与原方向不符合
+        if (dir * dire < 0)//行走方向与原方向不符合
         {
             transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
             dire = dir;
@@ -156,45 +191,47 @@ public class Character_controller : MonoBehaviour
         {
             curVelocity.x += dir * acceleration * Time.fixedDeltaTime;
             curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//防止超出maxSpeed限制
-            rig.velocity = curVelocity; 
+            rig.velocity = curVelocity;
             float animSpeed = Mathf.Abs(curVelocity.x) / maxSpeed;
             anim.SetFloat("walk", animSpeed);//设置动画速度
         }
-    
+
 
 
     }
     void UpdateJump()
     {
-        if(isGround&&jump)//a jump begin
+        if (isGround && jump)//a jump begin
         {
             rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             jump = false;//一次jump仅改变一次jumpForce
             anim.SetFloat("idle", 0);
             anim.SetFloat("fall", 0);
             anim.SetFloat("jump", 1);
-            
+
         }
     }
     void SwitchAnim()
     {
-        if (anim.GetFloat("jump")==1)
+        if (anim.GetFloat("fall") == 1 && isGround)
         {
-            if (rig.velocity.y < 0)//开始落地
+            anim.SetFloat("idle", 1);
+
+
+        }
+        if (anim.GetFloat("jump") == 1)
+        {
+            Debug.Log(rig.velocity.y);
+            if (rig.velocity.y <= 0)//开始落地
             {
                 anim.SetFloat("jump", 0);
                 anim.SetFloat("fall", 1);
             }
-            //jump = false;
+            jump = false;
         }
-        /*      if(walk&&!anim.GetBool("jump"))
-              {
-                  anim.SetFloat("walk", 1);
-              }*/
-        if (rig.velocity.x == 0)
+        if (!walk)
         {
             anim.SetFloat("walk", 0);
-
         }
 
     }
@@ -206,10 +243,10 @@ public class Character_controller : MonoBehaviour
             isGround = true;
             ifclimb = true;//碰到地面时，默认上次爬梯子结束
             ladderEnd = true;
-            if (anim.GetFloat("fall")==1 && isGround)
+            if (anim.GetFloat("fall") == 1 && isGround)
             {
                 anim.SetFloat("idle", 1);
-                anim.SetFloat("fall", 0);
+
 
             }
             if (!inActive)
@@ -226,32 +263,20 @@ public class Character_controller : MonoBehaviour
             isGround = false;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "ladder" && ladderEnd)
-        {
-            Debug.Log("find ladder");
-            hasLadder = true;
-            inActive = false;
-            ladderEnd = false;
-
-            jump = false; walk = false;
-            anim.SetFloat("walk", 0);
-            anim.SetFloat("idle", 1);
-            rig.velocity = new Vector2(0, 0);
-
-
-            SendMessageUpwards("hasLadder", SendMessageOptions.DontRequireReceiver);
-            SwitchAnim();
-            Debug.Log("get ladder");
-        }
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
         if (collision.transform.tag == "rope")
         {
             nearRope = true;
+        }
+        if (collision.transform.tag == "Tree")//碰到可爬的树
+        {
+            nearTree = true;
+        }
+        if(collision.transform.tag=="ladder")
+        {
+            hasLadder = true;
         }
 
 
@@ -262,6 +287,14 @@ public class Character_controller : MonoBehaviour
         if (collision.transform.tag == "rope")
         {
             nearRope = false;
+        }
+        if (collision.transform.tag == "Tree")
+        {
+            nearTree = false;
+        }
+        if (collision.transform.tag == "ladder")
+        {
+            hasLadder = false;
         }
 
 

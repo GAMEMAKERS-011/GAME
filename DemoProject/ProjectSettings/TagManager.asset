@@ -9,14 +9,20 @@ TagManager:
   - ladder
   - keyA
   - keyB
+  - hanger
+  - rope
+  - Tree
+  - vase
+  - egg
+  - shirt
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PersonLayer
   - Water
   - UI
-  - 
+  - NotCollideWithPerson
   - 
   - 
   - 

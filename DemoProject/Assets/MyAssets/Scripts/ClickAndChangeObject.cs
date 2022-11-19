@@ -9,17 +9,19 @@ public class ClickAndChangeObject : MonoBehaviour
     public SpriteRenderer sr;//组件
     public Sprite[] pic;//图片
     public GameObject itemBar;
+    private bool nearLadder;
     bool hasOpened = false;
 
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = pic[0];
+        nearLadder = false;
     }
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 10)
+        if (Vector3.Distance(character.transform.position, transform.position) < 10||nearLadder)
         {
             // need to change input manager in player setting
             if(Input.GetButtonDown("InteractButton"))
@@ -27,15 +29,26 @@ public class ClickAndChangeObject : MonoBehaviour
                 Debug.Log("Close distance and button pressed!");
                 if(hasOpened == false)
                 {
-                    string tag = "keyA";
-                    bool s = itemBar.GetComponent<itemChoser>().Query(tag);
-                    if(s==true)
-                    {
-                        sr.sprite = pic[1];
+                    SendMessageUpwards("ladderOpen", SendMessageOptions.DontRequireReceiver);
+                    sr.sprite = pic[1];
                         hasOpened = true;
-                    }
+                  
                 }
             }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.tag == "ladder")
+        {
+            nearLadder = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "ladder")
+        {
+            nearLadder = false;
         }
     }
 }
