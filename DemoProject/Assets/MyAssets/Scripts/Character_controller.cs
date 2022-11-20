@@ -37,7 +37,7 @@ public class Character_controller : MonoBehaviour
         jump = false;
         walk = true;
         dir = fdir;
-        Vector2 curp = transform.position; curp[0] = curp[0] + 3;
+        Vector2 curp = transform.position; curp[0] = curp[0] + 3*dir;
         transform.position = curp;
         FixedUpdate();
 
