@@ -10,7 +10,10 @@ public class BelieverUnderTree : MonoBehaviour
     public GameObject character;//Ů�����󣬻ᴥ���Ի�
     public GameObject egg1;
     public GameObject egg2;
-
+    public GameObject words;
+    public GameObject keyB;
+   
+    private bool notDie;
     private GameObject deadImage;
   
     
@@ -19,9 +22,9 @@ public class BelieverUnderTree : MonoBehaviour
     {
        anim = GetComponent<Animator>();
         isHit = false;
-       
+        notDie = true;
     }
-  
+
     void believerDie()
     {
         anim.enabled = false;
@@ -56,15 +59,22 @@ public class BelieverUnderTree : MonoBehaviour
             anim.SetFloat("die", 1);//��������
             isHit = true;
         }
+        if (isHit)
+        {
+            keyB.SetActive(true);
+        }
 
         if (Vector3.Distance(character.transform.position, transform.position) < 3)
         {
-            if (!isHit)
+            if ((!isHit)&&notDie)
             {
                 anim.SetFloat("idle", 1);//��������Ů��վ��
                                          //��������Ի�
-                                         //Todo
-                                         //������������
+                notDie = false;
+                character.GetComponent<Character_controller>().inActive = false;
+                words.SetActive(true);
+                words.GetComponent<Words>().StartPlay(2);
+                //������������
                 deadImage = GameObject.Find("deadImage");
                 // deadImage.SetActive(true);
                 Invoke("die",1);

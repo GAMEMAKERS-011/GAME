@@ -8,25 +8,66 @@ public class manager : MonoBehaviour
     public GameObject climber;
     public GameObject grand;
     public GameObject slider;
+    public GameObject cat;
     private GameObject deadImage;
     public GameObject cinemachine;
     public int shirtCount;
     private CinemachineVirtualCamera cm;
+    public GameObject mother;
+    public GameObject b1;
+    public GameObject b2;
+    public GameObject b3;
+    public GameObject leader;
+    private float count;//½ÌÖ÷ÔÚÍâÃæÕ¾Ê®Ãë»ØÈ¥
+    private bool changeRight;//ÊÇ·ñ³É¹¦µ÷»»ÁË¾Æ±­
     // Start is called before the first frame update
     void Start()
     {
         deadImage = GameObject.Find("deadImage");
         shirtCount = 0;
         cm = cinemachine.GetComponent<CinemachineVirtualCamera>();
+        changeRight = false;
 
+    }
+    public void SetChangeRight()
+    {
+        changeRight = true;
+    }
+    public bool GetChangeRight()
+    {
+        return changeRight;
     }
     void SliderBegin()
     {
 
-        girl.GetComponent<Character_controller>().inActive = false;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½
-        girl.SetActive(false);//ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        girl.GetComponent<Character_controller>().inActive = false;//ÏÈÈÃÈËÎï²»¶¯£¬ÈËÎïÍê³Éµ±Ç°¶¯×÷µÄÍ£Ö¹¡£
+        girl.SetActive(false);//ÔÙÉèÖÃ¸ÃÈËÎïobjectµÄÊôĞÔ
         slider.SetActive(true);
     }
+    public void changedSucceed()//Å®º¢½»»»ÁË¾Æ±­
+    {
+        girl.SetActive(false);
+        cm.Follow = leader.GetComponent<Transform>();
+        leader.GetComponent<Animation>().Play("leader_pan_out");
+        //½øÈë×îºó½çÃæ£¬Õ¹Ê¾Ä¸Ç×ÉúËÀ---------Todo
+
+    }
+    public void LeaderHigh()
+    {
+        leader.GetComponent<Animation>().Play("leader_high");
+    }
+    public void leaderOut()//Ê®×Ö¼Üµ¹ÏÂÖ®ºó´ÙÊ¹Leader³öÀ´
+    {
+ 
+        cat.GetComponent<Cat_controller>().lActive = false;
+        leader.GetComponent<Animation>().Play("leader_out");//³öÀ´²¢ÇÒ»÷´òÃ¨Ã¨
+
+    }
+    public void catLeave()
+    {
+        cat.GetComponent<Animation>().Play("cat_leave_house");
+    }
+
     public void SliderEnd()
     {
         slider.SetActive(false);
@@ -39,20 +80,14 @@ public class manager : MonoBehaviour
     public void GrandmaEnd()
     {
         grand.SetActive(false);
-        // deadImage.SetActive(true);
-        Invoke("die",1);
-        //Å®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßºï¿½Ä½ï¿½ï¿½ï¿½Õ¹Ê¾
+        deadImage.SetActive(true);
+        //Å®º¢±»ÍÏ×ßºóµÄ½çÃæÕ¹Ê¾
     }
-
-    void die(){
-        GameObject.Find("deadWindow").SendMessage("die");
-    }
-
     void hasLadder()
     {
         climber.SetActive(true);
-        girl.GetComponent<Character_controller>().inActive = false;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½
-        girl.SetActive(false);//ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        girl.GetComponent<Character_controller>().inActive = false;//ÏÈÈÃÈËÎï²»¶¯£¬ÈËÎïÍê³Éµ±Ç°¶¯×÷µÄÍ£Ö¹¡£
+        girl.SetActive(false);//ÔÙÉèÖÃ¸ÃÈËÎïobjectµÄÊôĞÔ
         climber.GetComponent<Climber_control>().climbLadder = true;
         Vector2 newP = girl.GetComponent<Transform>().position;
         newP.x = newP.x + 0.12f; newP.y = newP.y + 2.2f;
@@ -95,7 +130,7 @@ public class manager : MonoBehaviour
 
 
     }
-    void ladderOpen()//ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½
+    void ladderOpen()//Ìİ×ÓÒÑ¾­´ò¿ª
     {
         girl.GetComponent<Character_controller>().ladderCanUse = true;
     }

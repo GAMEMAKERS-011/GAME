@@ -16,6 +16,7 @@ TagManager:
   - egg
   - shirt
   - water
+  - house
   layers:
   - Default
   - TransparentFX

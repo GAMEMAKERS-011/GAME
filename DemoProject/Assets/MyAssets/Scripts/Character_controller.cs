@@ -292,7 +292,10 @@ public class Character_controller : MonoBehaviour
         {
             hasLadder = true;
         }
-
+        if (collision.transform.tag == "house")
+        {
+            manager.GetComponent<manager>().GrandmaEnd();//进入死亡界面
+        }
 
 
     }

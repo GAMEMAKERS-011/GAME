@@ -9,6 +9,7 @@ public class Cat_controller : MonoBehaviour
     public float acceleration;
     public int jumpForce;
     public bool inActive;
+    public bool lActive;
     private bool Contact;
 
     private float dire;//��ǰ����
@@ -37,6 +38,7 @@ public class Cat_controller : MonoBehaviour
         rig.simulated = false;
         rig.freezeRotation = true;
         coll.isTrigger = true;
+        lActive = true;
         //anim.SetBool("test", false);
         jump = false;
         walk = false;
@@ -80,7 +82,7 @@ public class Cat_controller : MonoBehaviour
 
             }
         }
-        if (!inActive)
+        if ((!inActive) || (!lActive))
         {
             jump = false;
             walk = false;
@@ -99,7 +101,7 @@ public class Cat_controller : MonoBehaviour
         {
             rig.simulated = true;
             coll.isTrigger = false;
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.X))
             {
                 anim.SetFloat("scratch", 1);
             }
