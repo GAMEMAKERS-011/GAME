@@ -7,7 +7,7 @@ public class operation : MonoBehaviour
     public GameObject operationImage;
     public GameObject titleImage;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         operationImage = GameObject.Find("operationImage");
         titleImage = GameObject.Find("titleImage");

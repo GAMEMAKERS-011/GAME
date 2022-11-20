@@ -268,7 +268,7 @@ public class Character_controller : MonoBehaviour
     }
     void inWaterDie()
     {
-         deadWindow.SendMessage("die");
+        GameObject.Find("deadWindow").SendMessage("die");
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

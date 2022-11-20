@@ -11,8 +11,8 @@ public class Cat_controller : MonoBehaviour
     public bool inActive;
     private bool Contact;
 
-    private float dire;//µ±Ç°·½Ïò
-    private float dir;//¼üÅÌÒªÇóÐÐ½ø·½Ïò
+    private float dire;//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    private float dir;//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Animator anim;
     private Rigidbody2D rig;
     private BoxCollider2D coll;
@@ -20,7 +20,7 @@ public class Cat_controller : MonoBehaviour
     private bool walk;
     private bool jump;
     private bool down;
-    public bool isGround;//1:¿ÉÒÔÌøÔ¾£¬2£º²»¿ÉÒÔ  
+    public bool isGround;//1:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
                          // public GameObject itemList;
 
     public GameObject character;    //link to the person character
@@ -29,7 +29,7 @@ public class Cat_controller : MonoBehaviour
 
     void Start()
     {
-        dire = -1;//³õÊ¼»¯Ê±ºòÏò×óÎªÕý·½Ïò
+        dire = -1;//ï¿½ï¿½Ê¼ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
@@ -43,6 +43,10 @@ public class Cat_controller : MonoBehaviour
         inActive = false;
         Contact = false;
 
+        character  = GameObject.Find("girl");
+        itemBar = GameObject.Find("items");
+        charaChooser = GameObject.Find("character");
+
     }
     void stratchEnd()
     {
@@ -55,20 +59,20 @@ public class Cat_controller : MonoBehaviour
         {
             
 
-            //ÈËÎï×ß½ø
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½
             if (Input.GetKeyDown(KeyCode.X) && (!Contact))
             {
                 Debug.Log("press x,add milk");
-                //°´ÏÂx
+                //ï¿½ï¿½ï¿½ï¿½x
                 if (itemBar.GetComponent<itemChoser>().Query("milk"))
                 {
-                    //Èç¹ûÎïÆ·À¸ÖÐÓÐÅ£ÄÌ
-                    //to-do : µ÷ÓÃÃ¨³Ô¶«Î÷µÄ¶¯»­
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½
+                    //to-do : ï¿½ï¿½ï¿½ï¿½Ã¨ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
                     inActive = true;
                     anim.SetFloat("eat", 1);
                     itemBar.GetComponent<itemChoser>().DeleteItem("milk");
-                    Sprite blank = Resources.Load("girl", typeof(Sprite)) as Sprite;//»¹Ã»Í¼Æ¬£¬²ÉÓÃ¿ÕÍ¼
-                    charaChooser.GetComponent<Chara_Chooser>().SetAnimal(blank, "cat");   //(²îÍ¼Æ¬)
+                    Sprite blank = Resources.Load("girl", typeof(Sprite)) as Sprite;//ï¿½ï¿½Ã»Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½Í¼
+                    charaChooser.GetComponent<Chara_Chooser>().SetAnimal(blank, "cat");   //(ï¿½ï¿½Í¼Æ¬)
                     Contact = true;
 
                 }
@@ -172,7 +176,7 @@ public class Cat_controller : MonoBehaviour
         }
         if (anim.GetFloat("jump") == 1)
         {
-            if (rig.velocity.y <= 0)//¿ªÊ¼ÂäµØ
+            if (rig.velocity.y <= 0)//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½
             {
                 anim.SetFloat("jump", 0);
                 anim.SetFloat("fall", 1);
@@ -195,9 +199,9 @@ public class Cat_controller : MonoBehaviour
     }
     void UpdateVelocity()
     {
-        Vector3 cur = transform.localScale;//»ñÈ¡µ±Ç°localSacleµÄ²ÎÊý£¬ÔÊÐíÈËÎï´óÐ¡ËæÒâµ÷½Ú
-        Vector2 curVelocity = rig.velocity; //µ±Ç°ÔË¶¯ËÙ¶È
-        if (dir * dire < 0)//ÐÐ×ß·½ÏòÓëÔ­·½Ïò²»·ûºÏ
+        Vector3 cur = transform.localScale;//ï¿½ï¿½È¡ï¿½ï¿½Ç°localSacleï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Vector2 curVelocity = rig.velocity; //ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½Ù¶ï¿½
+        if (dir * dire < 0)//ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ò²»·ï¿½ï¿½ï¿½
         {
             transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
             dire = dir;
@@ -206,10 +210,10 @@ public class Cat_controller : MonoBehaviour
         if (walk)
         {
             curVelocity.x += dir * acceleration * Time.fixedDeltaTime;
-            curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//·ÀÖ¹³¬³ömaxSpeedÏÞÖÆ
+            curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½maxSpeedï¿½ï¿½ï¿½ï¿½
             rig.velocity = curVelocity;
             float animSpeed = Mathf.Abs(curVelocity.x) / maxSpeed;
-            anim.SetFloat("walk", animSpeed);//ÉèÖÃ¶¯»­ËÙ¶È
+            anim.SetFloat("walk", animSpeed);//ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         }
 
 
@@ -220,7 +224,7 @@ public class Cat_controller : MonoBehaviour
         if (isGround && jump)//a jump begin
         {
             rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            jump = false;//Ò»´Îjump½ö¸Ä±äÒ»´ÎjumpForce
+            jump = false;//Ò»ï¿½ï¿½jumpï¿½ï¿½ï¿½Ä±ï¿½Ò»ï¿½ï¿½jumpForce
             anim.SetFloat("idle", 0);
             anim.SetFloat("fall", 0);
             anim.SetFloat("jump", 1);

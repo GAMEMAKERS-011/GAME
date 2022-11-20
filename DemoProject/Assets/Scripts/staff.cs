@@ -7,7 +7,7 @@ public class staff : MonoBehaviour
     public GameObject staffImage;
     public GameObject titleImage;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         staffImage = GameObject.Find("staffImage");
         titleImage = GameObject.Find("titleImage");
