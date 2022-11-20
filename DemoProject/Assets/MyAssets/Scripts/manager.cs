@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Cinemachine;
 public class manager : MonoBehaviour
 {
     public GameObject girl;
@@ -9,13 +9,16 @@ public class manager : MonoBehaviour
     public GameObject grand;
     public GameObject slider;
     private GameObject deadImage;
+    public GameObject cinemachine;
     public int shirtCount;
-
+    private CinemachineVirtualCamera cm;
     // Start is called before the first frame update
     void Start()
     {
         deadImage = GameObject.Find("deadImage");
         shirtCount = 0;
+        cm = cinemachine.GetComponent<CinemachineVirtualCamera>();
+
     }
     void SliderBegin()
     {
@@ -52,8 +55,9 @@ public class manager : MonoBehaviour
         girl.SetActive(false);//�����ø�����object������
         climber.GetComponent<Climber_control>().climbLadder = true;
         Vector2 newP = girl.GetComponent<Transform>().position;
-        newP.x = newP.x + 0.12f;newP.y = newP.y + 2.2f;
+        newP.x = newP.x + 0.12f; newP.y = newP.y + 2.2f;
         climber.GetComponent<Transform>().position = newP;
+        cm.Follow = climber.GetComponent<Transform>();
     }
     public void climbEnd()
     {
@@ -64,6 +68,7 @@ public class manager : MonoBehaviour
         Vector2 newP = climber.GetComponent<Transform>().position;
         newP.x = 30.7f; newP.y = 15.1f;
         girl.GetComponent<Transform>().position = newP;
+        cm.Follow = girl.GetComponent<Transform>();
     }
     public void climbToGirl(int dir)
     {
@@ -74,7 +79,9 @@ public class manager : MonoBehaviour
         Vector2 newP = climber.GetComponent<Transform>().position;
         newP.x = newP.x - 0.12f;
         girl.GetComponent<Transform>().position = newP;
+        cm.Follow = girl.GetComponent<Transform>();
         girl.GetComponent<Character_controller>().SetDir(dir);
+
     }
 
     void girlToClimb()
@@ -84,7 +91,7 @@ public class manager : MonoBehaviour
         Vector2 newP = girl.GetComponent<Transform>().position;
         newP.x = newP.x + 0.12f; newP.y = newP.y + 2;
         climber.GetComponent<Transform>().position = newP;
-
+        cm.Follow = climber.GetComponent<Transform>();
 
 
     }

@@ -9,7 +9,7 @@ public class Cat_controller : MonoBehaviour
     public float acceleration;
     public int jumpForce;
     public bool inActive;
-    public bool Contact;
+    private bool Contact;
 
     private float dire;//当前方向
     private float dir;//键盘要求行进方向
@@ -51,12 +51,12 @@ public class Cat_controller : MonoBehaviour
     }
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 100)
+        if (Vector3.Distance(character.transform.position, transform.position) < 5)
         {
-            Contact = false;
+            
 
             //人物走进
-            if (Input.GetKeyDown(KeyCode.X) || Contact)
+            if (Input.GetKeyDown(KeyCode.X) && (!Contact))
             {
                 Debug.Log("press x,add milk");
                 //按下x
@@ -69,8 +69,10 @@ public class Cat_controller : MonoBehaviour
                     itemBar.GetComponent<itemChoser>().DeleteItem("milk");
                     Sprite blank = Resources.Load("girl", typeof(Sprite)) as Sprite;//还没图片，采用空图
                     charaChooser.GetComponent<Chara_Chooser>().SetAnimal(blank, "cat");   //(差图片)
+                    Contact = true;
 
                 }
+                
 
             }
         }
@@ -93,7 +95,7 @@ public class Cat_controller : MonoBehaviour
         {
             rig.simulated = true;
             coll.isTrigger = false;
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 anim.SetFloat("scratch", 1);
             }
