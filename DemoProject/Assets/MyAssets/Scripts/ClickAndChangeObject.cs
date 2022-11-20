@@ -21,7 +21,7 @@ public class ClickAndChangeObject : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(character.transform.position, transform.position) < 10||nearLadder)
+        if (Vector3.Distance(character.transform.position, transform.position) < 5||nearLadder)
         {
             // need to change input manager in player setting
             if(Input.GetButtonDown("InteractButton"))

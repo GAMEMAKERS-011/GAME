@@ -7,18 +7,20 @@ public class AnimationObject : MonoBehaviour
 {
     public GameObject character;    // link an instance of the character to calculate the distance
     public GameObject animi;
+    public GameObject cat;
     bool hasPlayed = false;
 
     void Start()
     {
         //infoWindow.SetActive(false);
         //animi.GetComponent<Renderer>().enabled = false;
+        cat = GameObject.Find("cat");
     }
 
     void Update()
     {
         Animator ani = gameObject.GetComponent<Animator>();
-        if (Vector3.Distance(character.transform.position, transform.position) < 5)
+        if (Vector3.Distance(character.transform.position, transform.position) < 5 && (cat.GetComponent<Cat_controller>().inActive))
         {
             // need to change input manager in player setting
             if(Input.GetButtonDown("InteractButton"))
