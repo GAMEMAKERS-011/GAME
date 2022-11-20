@@ -14,25 +14,25 @@ public class Character_controller : MonoBehaviour
     public bool climbEnd;
     public bool ladderCanUse;
 
-    private float dire;//µ±Ç°·½Ïò
-    private float dir;//¼üÅÌÒªÇóĞĞ½ø·½Ïò
+    private float dire;//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    private float dir;//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ğ½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Animator anim;
     private Rigidbody2D rig;
     private BoxCollider2D coll;
 
-    //¿ØÖÆÈËÎïĞĞ×ßÌøÔ¾
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾
     private bool walk;
     private bool jump;
 
-    private bool isGround;//1:¿ÉÒÔÌøÔ¾£¬2£º²»¿ÉÒÔ  
-    private bool hasLadder;//ÅĞ¶ÏÊÇ·ñÅöµ½Ìİ×Ó
-    private bool ladderEnd;//ÊÇ·ñµÚÒ»´ÎÔ¶ÀëÌİ×ÓÁË
-    private bool ifclimb;//Õâ¸öÌİ×ÓÊÇ·ñÅÀ¹ıÁË
+    private bool isGround;//1:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
+    private bool hasLadder;//ï¿½Ğ¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private bool ladderEnd;//ï¿½Ç·ï¿½ï¿½Ò»ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private bool ifclimb;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private bool nearRope;
-    private bool nearTree;//¿¿½üÊ÷
+    private bool nearTree;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private bool inWater;
-    private GameObject deadImage;
-    public void SetDir(int fdir)//´ÓÊ÷ÉÏÌøÏÂ
+    public GameObject deadWindow;
+    public void SetDir(int fdir)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         jump = false;
         walk = true;
@@ -46,7 +46,7 @@ public class Character_controller : MonoBehaviour
     // public GameObject itemList;
     void Start()
     {
-        dire = 1;//³õÊ¼»¯Ê±ºòÏòÓÒÎªÕı·½Ïò\
+        dire = 1;//ï¿½ï¿½Ê¼ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\
 
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
@@ -56,7 +56,7 @@ public class Character_controller : MonoBehaviour
         jump = false;
         walk = false;
         inActive = true;
-        hasLadder = false;//³õÊ¼»¯Ê±²¢²»ÔÚÌİ×ÓÉÏ
+        hasLadder = false;//ï¿½ï¿½Ê¼ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         climbEnd = false;
 
         ladderEnd = true;
@@ -68,7 +68,7 @@ public class Character_controller : MonoBehaviour
         rig.simulated = true;
         rig.freezeRotation = true;
         coll.isTrigger = false;
-        deadImage = GameObject.Find("deadImage");
+        deadWindow = GameObject.Find("deadWindow");
 
     }
     void Update()
@@ -94,7 +94,7 @@ public class Character_controller : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.X))
                 {
                     Debug.Log("press x,use rope");
-                    //°´ÏÂx
+                    //ï¿½ï¿½ï¿½ï¿½x
                     int count = manager.GetComponent<manager>().shirtCount;
                     if (itemBar.GetComponent<itemChoser>().Query("hanger") && count >= 2)
                     {
@@ -183,9 +183,9 @@ public class Character_controller : MonoBehaviour
     }
     void UpdateVelocity()
     {
-        Vector3 cur = transform.localScale;//»ñÈ¡µ±Ç°localSacleµÄ²ÎÊı£¬ÔÊĞíÈËÎï´óĞ¡ËæÒâµ÷½Ú
-        Vector2 curVelocity = rig.velocity; //µ±Ç°ÔË¶¯ËÙ¶È
-        if (dir * dire < 0)//ĞĞ×ß·½ÏòÓëÔ­·½Ïò²»·ûºÏ
+        Vector3 cur = transform.localScale;//ï¿½ï¿½È¡ï¿½ï¿½Ç°localSacleï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        Vector2 curVelocity = rig.velocity; //ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½Ù¶ï¿½
+        if (dir * dire < 0)//ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ò²»·ï¿½ï¿½ï¿½
         {
             transform.localScale = new Vector3(-cur[0], cur[1], cur[2]);
             dire = dir;
@@ -194,10 +194,10 @@ public class Character_controller : MonoBehaviour
         if (walk)
         {
             curVelocity.x += dir * acceleration * Time.fixedDeltaTime;
-            curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//·ÀÖ¹³¬³ömaxSpeedÏŞÖÆ
+            curVelocity.x = Mathf.Clamp(curVelocity.x, -maxSpeed, maxSpeed);//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½maxSpeedï¿½ï¿½ï¿½ï¿½
             rig.velocity = curVelocity;
             float animSpeed = Mathf.Abs(curVelocity.x) / maxSpeed;
-            anim.SetFloat("walk", animSpeed);//ÉèÖÃ¶¯»­ËÙ¶È
+            anim.SetFloat("walk", animSpeed);//ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         }
 
 
@@ -208,7 +208,7 @@ public class Character_controller : MonoBehaviour
         if (isGround && jump)//a jump begin
         {
             rig.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            jump = false;//Ò»´Îjump½ö¸Ä±äÒ»´ÎjumpForce
+            jump = false;//Ò»ï¿½ï¿½jumpï¿½ï¿½ï¿½Ä±ï¿½Ò»ï¿½ï¿½jumpForce
             anim.SetFloat("idle", 0);
             anim.SetFloat("fall", 0);
             anim.SetFloat("jump", 1);
@@ -226,7 +226,7 @@ public class Character_controller : MonoBehaviour
         if (anim.GetFloat("jump") == 1)
         {
             Debug.Log(rig.velocity.y);
-            if (rig.velocity.y <= 0)//¿ªÊ¼ÂäµØ
+            if (rig.velocity.y <= 0)//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½
             {
                 anim.SetFloat("jump", 0);
                 anim.SetFloat("fall", 1);
@@ -245,7 +245,7 @@ public class Character_controller : MonoBehaviour
         if (collision.transform.tag == "Ground")
         {
             isGround = true;
-            ifclimb = true;//Åöµ½µØÃæÊ±£¬Ä¬ÈÏÉÏ´ÎÅÀÌİ×Ó½áÊø
+            ifclimb = true;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½
             ladderEnd = true;
             if (anim.GetFloat("fall") == 1 && isGround)
             {
@@ -262,13 +262,13 @@ public class Character_controller : MonoBehaviour
         if (collision.transform.tag == "water")
         {
             inActive = false; inWater = true;
-            anim.SetFloat("water", 1);//ÔËĞĞÍêºóÖ±½Ó½øËÀÍö½çÃæ
-
+            anim.SetFloat("water", 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            Invoke("inWaterDie", 1);
         }
     }
     void inWaterDie()
     {
-        deadImage.SetActive(true);
+         deadWindow.SendMessage("die");
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -284,7 +284,7 @@ public class Character_controller : MonoBehaviour
         {
             nearRope = true;
         }
-        if (collision.transform.tag == "Tree")//Åöµ½¿ÉÅÀµÄÊ÷
+        if (collision.transform.tag == "Tree")//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             nearTree = true;
         }

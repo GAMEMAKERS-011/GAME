@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BelieverUnderTree : MonoBehaviour
 {
-    public bool isHit;//ÊÇ·ñÓĞÄñµ°ÔÒÏÂ---ĞèÒªÁª¶¯Äñ³²
-    private float changed;//ÊÇ·ñÒª¸Ä±äÈËÎïĞĞ¶¯·½Ïò
+    public bool isHit;//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½---ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private float changed;//ï¿½Ç·ï¿½Òªï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½ï¿½ï¿½ï¿½ï¿½
     private Animator anim;
-    public GameObject character;//Å®º¢¶ÔÏó£¬»á´¥·¢¶Ô»°
+    public GameObject character;//Å®ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬»á´¥ï¿½ï¿½ï¿½Ô»ï¿½
     public GameObject egg1;
     public GameObject egg2;
 
@@ -46,14 +46,14 @@ public class BelieverUnderTree : MonoBehaviour
         {
             egg1.SetActive(false);
            
-            anim.SetFloat("die", 1);//ÈËÎïËÀÍö
+            anim.SetFloat("die", 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             isHit = true;
         }
         if (Vector3.Distance(egg2.transform.position, transform.position) < 1.5)
         {
             egg2.SetActive(false);
             
-            anim.SetFloat("die", 1);//ÈËÎïËÀÍö
+            anim.SetFloat("die", 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             isHit = true;
         }
 
@@ -61,16 +61,20 @@ public class BelieverUnderTree : MonoBehaviour
         {
             if (!isHit)
             {
-                anim.SetFloat("idle", 1);//ÈËÎïÕı¶ÔÅ®º¢Õ¾Á¢
-                                         //´¥·¢ÈËÎï¶Ô»°
+                anim.SetFloat("idle", 1);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®ï¿½ï¿½Õ¾ï¿½ï¿½
+                                         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½
                                          //Todo
-                                         //½øÈëËÀÍö½çÃæ
+                                         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 deadImage = GameObject.Find("deadImage");
-                deadImage.SetActive(true);
-
+                // deadImage.SetActive(true);
+                Invoke("die",1);
             }
         }
 
+    }
+
+    void die(){
+        GameObject.Find("deadWindow").SendMessage("die");
     }
     
 

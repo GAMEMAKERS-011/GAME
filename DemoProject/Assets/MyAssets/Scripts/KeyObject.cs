@@ -8,18 +8,21 @@ public class KeyObject : MonoBehaviour
     public GameObject character;    // link an instance of the character to calculate the distance
     public GameObject obj;
     public GameObject itemBar;  // link to the item bar
+    public GameObject girl;
+
     bool hasAdd=false;
     public GameObject words;
 
     void Start()
     {
           words.SetActive(false);
+          girl = GameObject.Find("girl");
     }
 
     void Update()
     {
         //Debug.Log(Vector3.Distance(character.transform.position, transform.position));
-        if (Vector3.Distance(character.transform.position, transform.position) < 5)
+        if (Vector3.Distance(character.transform.position, transform.position) < 5 && girl.GetComponent<Character_controller>().inActive)
         {
             //Debug.Log("test small dist!");
             if(Input.GetButtonDown("InteractButton"))

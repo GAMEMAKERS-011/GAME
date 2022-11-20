@@ -23,7 +23,7 @@ public class ZAnimationObject : MonoBehaviour
         if (Vector3.Distance(character.transform.position, transform.position) < 5)
         {
             // need to change input manager in player setting
-            if (Input.GetButtonDown("ZButton"))
+            if (Input.GetButtonDown("XButton"))
             {
                 if(transform.tag=="shirt")
                 {
@@ -47,12 +47,12 @@ public class ZAnimationObject : MonoBehaviour
         Animator ani = gameObject.GetComponent<Animator>();
         if (ani.GetCurrentAnimatorStateInfo(0).IsName("animation"))
         {
-            Debug.Log("²¥·Åclear");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½clear");
             while (ani.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
                 yield return null;
             }
-            Debug.Log("²¥·ÅÍê±Ï");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             animi.GetComponent<Renderer>().enabled = false;
         }
     }

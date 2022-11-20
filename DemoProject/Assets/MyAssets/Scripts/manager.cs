@@ -20,8 +20,8 @@ public class manager : MonoBehaviour
     void SliderBegin()
     {
 
-        girl.GetComponent<Character_controller>().inActive = false;//ÏÈÈÃÈËÎï²»¶¯£¬ÈËÎïÍê³Éµ±Ç°¶¯×÷µÄÍ£Ö¹¡£
-        girl.SetActive(false);//ÔÙÉèÖÃ¸ÃÈËÎïobjectµÄÊôĞÔ
+        girl.GetComponent<Character_controller>().inActive = false;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½
+        girl.SetActive(false);//ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         slider.SetActive(true);
     }
     public void SliderEnd()
@@ -36,14 +36,20 @@ public class manager : MonoBehaviour
     public void GrandmaEnd()
     {
         grand.SetActive(false);
-        deadImage.SetActive(true);
-        //Å®º¢±»ÍÏ×ßºóµÄ½çÃæÕ¹Ê¾
+        // deadImage.SetActive(true);
+        Invoke("die",1);
+        //Å®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßºï¿½Ä½ï¿½ï¿½ï¿½Õ¹Ê¾
     }
+
+    void die(){
+        GameObject.Find("deadWindow").SendMessage("die");
+    }
+
     void hasLadder()
     {
         climber.SetActive(true);
-        girl.GetComponent<Character_controller>().inActive = false;//ÏÈÈÃÈËÎï²»¶¯£¬ÈËÎïÍê³Éµ±Ç°¶¯×÷µÄÍ£Ö¹¡£
-        girl.SetActive(false);//ÔÙÉèÖÃ¸ÃÈËÎïobjectµÄÊôĞÔ
+        girl.GetComponent<Character_controller>().inActive = false;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½
+        girl.SetActive(false);//ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½objectï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         climber.GetComponent<Climber_control>().climbLadder = true;
         Vector2 newP = girl.GetComponent<Transform>().position;
         newP.x = newP.x + 0.12f;newP.y = newP.y + 2.2f;
@@ -82,7 +88,7 @@ public class manager : MonoBehaviour
 
 
     }
-    void ladderOpen()//Ìİ×ÓÒÑ¾­´ò¿ª
+    void ladderOpen()//ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½
     {
         girl.GetComponent<Character_controller>().ladderCanUse = true;
     }

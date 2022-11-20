@@ -10,7 +10,8 @@ public class Grand_control : MonoBehaviour
     private Animation pullgirl;
     private Collider2D coll;
     public GameObject vase;
-    private bool onlyonce;//¸ÃÀàÖÐµÄÁ÷³ÌÖ»·¢ÉúÒ»´Î
+    public GameObject deadImage;
+    private bool onlyonce;//ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +25,10 @@ public class Grand_control : MonoBehaviour
         pullgirl.enabled=false;
         coll.enabled = false;
     }
+
     void GrandCatchEnd()
     {
-        //Å®º¢ÓëgrandÈ«²¿ÏûÊ§
+        //Å®ï¿½ï¿½ï¿½ï¿½grandÈ«ï¿½ï¿½ï¿½ï¿½Ê§
         actGirl.SetActive(false);
         character.SetActive(false);
         manager.GetComponent<manager>().GrandmaEnd();
@@ -34,23 +36,23 @@ public class Grand_control : MonoBehaviour
     }
     void GrandMoveToGril()
     {
-        //girlµÄ´úÂë¿ªÊ¼Ö´ÐÐ
+        //girlï¿½Ä´ï¿½ï¿½ë¿ªÊ¼Ö´ï¿½ï¿½
         actGirl.SetActive(true);
          
     }
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(vase.transform.position, transform.position)<5)//»¨Æ¿ÔÒÏÂ
+        if (Vector3.Distance(vase.transform.position, transform.position)<5)//ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ï¿½
         {
-            onlyonce = false;//ºóÃæ²»»áÔÙÉËº¦Ð¡Å®º¢
+            onlyonce = false;//ï¿½ï¿½ï¿½æ²»ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½Ð¡Å®ï¿½ï¿½
             vase.SetActive(false);
             pullgirl.Play("grandma_down");
         }
         if (onlyonce && Vector3.Distance(character.transform.position, transform.position) < 2)
         {
             Vector2 girlPosi = character.transform.position;
-            character.GetComponent<Character_controller>().inActive = false;//Ð¡Å®º¢²»ÄÜ¶¯£¬¿ªÊ¼¹ý¾çÇé
+            character.GetComponent<Character_controller>().inActive = false;//Ð¡Å®ï¿½ï¿½ï¿½ï¿½ï¿½Ü¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             character.SetActive(false);
             
             actGirl.transform.position = girlPosi;
