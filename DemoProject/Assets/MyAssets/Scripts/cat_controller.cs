@@ -33,7 +33,7 @@ public class Cat_controller : MonoBehaviour
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
-        
+
         rig.simulated = false;
         rig.freezeRotation = true;
         coll.isTrigger = true;
@@ -44,12 +44,17 @@ public class Cat_controller : MonoBehaviour
         Contact = false;
 
     }
+    void stratchEnd()
+    {
+        anim.SetFloat("scratch", 0);
+
+    }
     void Update()
     {
         if (Vector3.Distance(character.transform.position, transform.position) < 100)
         {
             Contact = false;
-            
+
             //人物走进
             if (Input.GetKeyDown(KeyCode.X) || Contact)
             {
@@ -73,8 +78,8 @@ public class Cat_controller : MonoBehaviour
         {
             jump = false;
             walk = false;
-           
-           
+
+
 
             //set cat animation to be idle
             anim.SetFloat("fall", 0); anim.SetFloat("walk", 0);
@@ -82,12 +87,16 @@ public class Cat_controller : MonoBehaviour
             anim.SetFloat("jump", 0);
             SwitchAnim();
 
-           
+
         }
         else
         {
             rig.simulated = true;
             coll.isTrigger = false;
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                anim.SetFloat("scratch", 1);
+            }
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
             {
                 if (isGround)
@@ -131,8 +140,8 @@ public class Cat_controller : MonoBehaviour
 
 
             SwitchAnim();
-         //   walker();
-           // jumper();
+            //   walker();
+            // jumper();
         }
 
     }
@@ -161,14 +170,14 @@ public class Cat_controller : MonoBehaviour
         }
         if (anim.GetFloat("jump") == 1)
         {
-            if (rig.velocity.y < 0)//开始落地
+            if (rig.velocity.y <= 0)//开始落地
             {
                 anim.SetFloat("jump", 0);
                 anim.SetFloat("fall", 1);
             }
             jump = false;
         }
-        if(!walk)
+        if (!walk)
         {
             anim.SetFloat("walk", 0);
         }
@@ -226,7 +235,7 @@ public class Cat_controller : MonoBehaviour
                 rig.simulated = false;
                 coll.isTrigger = true;
             }
-            
+
         }
     }
     private void OnCollisionExit2D(Collision2D collision)

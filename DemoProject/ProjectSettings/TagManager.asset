@@ -15,6 +15,7 @@ TagManager:
   - vase
   - egg
   - shirt
+  - water
   layers:
   - Default
   - TransparentFX

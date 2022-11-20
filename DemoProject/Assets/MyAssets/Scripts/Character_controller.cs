@@ -30,12 +30,14 @@ public class Character_controller : MonoBehaviour
     private bool ifclimb;//这个梯子是否爬过了
     private bool nearRope;
     private bool nearTree;//靠近树
+    private bool inWater;
+    private GameObject deadImage;
     public void SetDir(int fdir)//从树上跳下
     {
         jump = false;
         walk = true;
         dir = fdir;
-        Vector2 curp = transform.position;curp[0] = curp[0] + 3;
+        Vector2 curp = transform.position; curp[0] = curp[0] + 3;
         transform.position = curp;
         FixedUpdate();
 
@@ -60,16 +62,18 @@ public class Character_controller : MonoBehaviour
         ladderEnd = true;
         nearRope = false;
         nearTree = false;
+        inWater = false;
 
         //set can be collide
         rig.simulated = true;
         rig.freezeRotation = true;
         coll.isTrigger = false;
+        deadImage = GameObject.Find("deadImage");
 
     }
     void Update()
     {
-        if (!inActive)
+        if ((!inActive) || inWater)
         {
             jump = false; walk = false;
 
@@ -92,7 +96,7 @@ public class Character_controller : MonoBehaviour
                     Debug.Log("press x,use rope");
                     //按下x
                     int count = manager.GetComponent<manager>().shirtCount;
-                    if (itemBar.GetComponent<itemChoser>().Query("hanger")&&count>=2)
+                    if (itemBar.GetComponent<itemChoser>().Query("hanger") && count >= 2)
                     {
 
                         itemBar.GetComponent<itemChoser>().DeleteItem("hanger");
@@ -117,7 +121,7 @@ public class Character_controller : MonoBehaviour
                 }
                 else
                 {
-                    if(hasLadder&&ladderCanUse)
+                    if (hasLadder && ladderCanUse)
                     {
                         SendMessageUpwards("hasLadder", SendMessageOptions.DontRequireReceiver);
                     }
@@ -255,6 +259,16 @@ public class Character_controller : MonoBehaviour
                 coll.isTrigger = true;
             }
         }
+        if (collision.transform.tag == "water")
+        {
+            inActive = false; inWater = true;
+            anim.SetFloat("water", 1);//运行完后直接进死亡界面
+
+        }
+    }
+    void inWaterDie()
+    {
+        deadImage.SetActive(true);
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -274,10 +288,11 @@ public class Character_controller : MonoBehaviour
         {
             nearTree = true;
         }
-        if(collision.transform.tag=="ladder")
+        if (collision.transform.tag == "ladder")
         {
             hasLadder = true;
         }
+
 
 
     }
