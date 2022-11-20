@@ -33,6 +33,7 @@ public class ClickAndChangeObject : MonoBehaviour
                     {
                         sr.sprite = pic[1];
                         hasOpened = true;
+                        this.GetComponent<BoxCollider2D>().enabled = false;
                     }
                 }
             }
