@@ -14,7 +14,6 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log(Vector3.Distance(character.transform.position, transform.position));
         if (Vector3.Distance(character.transform.position, transform.position) < 10)
         {
             SpriteRenderer sp = GetComponent<SpriteRenderer>();
